@@ -1,25 +1,74 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Form from "./Form";
+import Game from "./Game";
+import Footer from "./Footer";
 
 function App() {
+  const [gameFields, setGameFields] = useState([]);
+
+  const [gameLineColumns, setGameLineColumns] = useState(10);
+  const [gameLineRows, setGameLineRows] = useState(10);
+  // const [bombsNumber, setBombsNumber] = useState(10);
+  const [isGameWon, setIsGameWon] = useState(false);
+  const [isGameLost, setIsGameLost] = useState(false);
+
+
+  const revealField = (id) => {
+    setGameFields(gameFields =>
+      [
+        ...gameFields.slice(0, id),
+        { ...gameFields[id], hidden: false },
+        ...gameFields.slice(id + 1),
+      ])
+  };
+
+  const createNewField = (type, hidden = true, bombsAround = 0, rightClicked = false) => {
+    setGameFields(gameFields => [
+      ...gameFields,
+      {
+        id: gameFields.length,
+        type,
+        hidden,
+        bombsAround,
+        rightClicked,
+      }]
+    )
+  };
+
+  const generateFields = () => {
+    for (let i = 0; i < gameLineRows; i++) {
+      for (let y = 0; y < gameLineColumns; y++) {
+
+        if (y === 0 || y === (gameLineColumns - 1) || i === 0 || i === (gameLineRows - 1)) {
+          createNewField("border", false);
+        } else {
+          createNewField("field", true, 0);
+        }
+      }
+    }
+  };
+
+  const getGameProperties = (bombs, innerLineColumns, innerLineRows) => {
+    setGameLineColumns(innerLineColumns + 2);
+    setGameLineRows(innerLineRows + 2);
+    // setBombsNumber(bombs);
+    setGameFields([]);
+    setIsGameWon(false);
+    setIsGameLost(false);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Game gameFields={gameFields}
+        gameLineColumns={gameLineColumns}
+        gameLineRows={gameLineRows}
+        isGameLost={isGameLost}
+        isGameWon={isGameWon}
+        revealField={revealField}
+      />
+      <Form getGameProperties={getGameProperties} generateFields={generateFields} />
+      <Footer />
+    </>
   );
 }
 
