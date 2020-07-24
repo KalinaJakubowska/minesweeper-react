@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import "./style.css";
 
 const Form = ({ getGameProperties, generateFields }) => {
-    const [innerLineColumns, setGameLineColumns] = useState(8);
-    const [innerLineRows, setGameLineRows] = useState(8);
-    const [bombs, setBombsNumber] = useState(10);
+    const [innerLineColumns, setInnerLineColumns] = useState(8);
+    const [innerLineRows, setInnerLineRows] = useState(8);
+    const [bombsNumber, setBombsNumber] = useState(10);
     const onFormSubmit = (event) => {
         event.preventDefault();
-        getGameProperties(+bombs, +innerLineColumns, +innerLineRows);
+        getGameProperties(+bombsNumber, +innerLineColumns, +innerLineRows);
         generateFields();
     }
 
@@ -26,7 +26,7 @@ const Form = ({ getGameProperties, generateFields }) => {
                         min="5"
                         max="25"
                         value={innerLineColumns}
-                        onChange={({ target }) => setGameLineColumns(target.value)}
+                        onChange={({ target }) => setInnerLineColumns(target.value)}
                         name="columnsNumber"
                         className="form__input" />
                 </label>
@@ -38,7 +38,7 @@ const Form = ({ getGameProperties, generateFields }) => {
                         min="5"
                         max="20"
                         value={innerLineRows}
-                        onChange={({ target }) => setGameLineRows(target.value)}
+                        onChange={({ target }) => setInnerLineRows(target.value)}
                         name="rowsNumber"
                         className="form__input" />
                 </label>
@@ -49,7 +49,7 @@ const Form = ({ getGameProperties, generateFields }) => {
                         step="1"
                         min="5"
                         max="300"
-                        value={bombs}
+                        value={bombsNumber}
                         onChange={({ target }) => setBombsNumber(target.value)}
                         name="bombsNumber"
                         className="form__input" />
