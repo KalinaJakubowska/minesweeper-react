@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Form from "./Form";
 import Game from "./Game";
 import Footer from "./Footer";
@@ -47,6 +47,9 @@ function App() {
       }
     }
   };
+  useEffect(()=> {
+    generateFields();
+  },[gameLineColumns, gameLineRows])
 
   const getGameProperties = (bombs, innerLineColumns, innerLineRows) => {
     setGameLineColumns(innerLineColumns + 2);
