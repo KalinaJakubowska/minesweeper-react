@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import "./style.css";
 
-const Form = ({ getGameProperties, generateFields }) => {
+const Form = ({ getGameProperties }) => {
     const [innerLineColumns, setInnerLineColumns] = useState(8);
     const [innerLineRows, setInnerLineRows] = useState(8);
     const [bombsNumber, setBombsNumber] = useState(10);
     const onFormSubmit = (event) => {
         event.preventDefault();
         getGameProperties(+bombsNumber, +innerLineColumns, +innerLineRows);
-        generateFields();
     }
 
     return (
