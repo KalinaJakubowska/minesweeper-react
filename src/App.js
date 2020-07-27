@@ -10,6 +10,8 @@ function App() {
   const [bombsNumber, setBombsNumber] = useState(10);
   const [isGameWon, setIsGameWon] = useState(false);
   const [isGameLost, setIsGameLost] = useState(false);
+  const [gameSize, setGameSize] = useState(gameLineColumns * gameLineRows);
+  const [isItBeforeFirstLeftClick, setIsItBeforeFirstLeftClick] = useState(true);
 
   const getGameProperties = (bombsNumber, innerLineColumns, innerLineRows) => {
     setGameLineColumns(innerLineColumns + 2);
@@ -17,6 +19,8 @@ function App() {
     setBombsNumber(bombsNumber);
     setIsGameWon(false);
     setIsGameLost(false);
+    setIsItBeforeFirstLeftClick(true);
+    setGameSize((innerLineColumns + 2) * (innerLineRows + 2));
   }
 
   return (
@@ -31,6 +35,9 @@ function App() {
         setIsGameLost={setIsGameLost}
         isGameWon={isGameWon}
         setIsGameWon={setIsGameWon}
+        gameSize={gameSize}
+        isItBeforeFirstLeftClick={isItBeforeFirstLeftClick}
+        setIsItBeforeFirstLeftClick={setIsItBeforeFirstLeftClick}
       />
       <Form
         getGameProperties={getGameProperties}
