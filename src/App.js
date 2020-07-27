@@ -1,75 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Form from "./Form";
 import Game from "./Game";
 import Footer from "./Footer";
 
 function App() {
   const [gameFields, setGameFields] = useState([]);
-
   const [gameLineColumns, setGameLineColumns] = useState(10);
   const [gameLineRows, setGameLineRows] = useState(10);
-  // const [bombsNumber, setBombsNumber] = useState(10);
+  const [bombsNumber, setBombsNumber] = useState(10);
   const [isGameWon, setIsGameWon] = useState(false);
   const [isGameLost, setIsGameLost] = useState(false);
 
-
-  const revealField = (id) => {
-    setGameFields(gameFields =>
-      [
-        ...gameFields.slice(0, id),
-        { ...gameFields[id], hidden: false },
-        ...gameFields.slice(id + 1),
-      ])
-  };
-
-  const createNewField = (type, hidden = true, bombsAround = 0, rightClicked = false) => {
-    setGameFields(gameFields => [
-      ...gameFields,
-      {
-        id: gameFields.length,
-        type,
-        hidden,
-        bombsAround,
-        rightClicked,
-      }]
-    )
-  };
-
-  const generateFields = () => {
-    for (let i = 0; i < gameLineRows; i++) {
-      for (let y = 0; y < gameLineColumns; y++) {
-
-        if (y === 0 || y === (gameLineColumns - 1) || i === 0 || i === (gameLineRows - 1)) {
-          createNewField("border", false);
-        } else {
-          createNewField("field", true, 0);
-        }
-      }
-    }
-  };
-  useEffect(()=> {
-    generateFields();
-  },[gameLineColumns, gameLineRows])
-
-  const getGameProperties = (bombs, innerLineColumns, innerLineRows) => {
+  const getGameProperties = (bombsNumber, innerLineColumns, innerLineRows) => {
     setGameLineColumns(innerLineColumns + 2);
     setGameLineRows(innerLineRows + 2);
-    // setBombsNumber(bombs);
-    setGameFields([]);
+    setBombsNumber(bombsNumber);
     setIsGameWon(false);
     setIsGameLost(false);
   }
 
   return (
     <>
-      <Game gameFields={gameFields}
+      <Game
+        gameFields={gameFields}
+        setGameFields={setGameFields}
+        bombsNumber={bombsNumber}
         gameLineColumns={gameLineColumns}
         gameLineRows={gameLineRows}
         isGameLost={isGameLost}
+        setIsGameLost={setIsGameLost}
         isGameWon={isGameWon}
-        revealField={revealField}
+        setIsGameWon={setIsGameWon}
       />
-      <Form getGameProperties={getGameProperties} generateFields={generateFields} />
+      <Form
+        getGameProperties={getGameProperties}
+        setGameFields={setGameFields}
+        gameLineColumns={gameLineColumns}
+        gameLineRows={gameLineRows} />
       <Footer />
     </>
   );

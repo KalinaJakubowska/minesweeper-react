@@ -1,7 +1,43 @@
 import React from "react";
 import "./style.css";
 
-const Game = ({ gameFields, gameLineColumns, gameLineRows, isGameLost, isGameWon, revealField}) => {
+const Game = ({
+    gameFields,
+    setGameFields,
+    bombsNumber,
+    gameLineColumns,
+    gameLineRows,
+    isGameLost,
+    setIsGameLost,
+    isGameWon,
+    setIsGameWon
+}) => {
+
+    const checkIsGameWon = () => {
+        if (gameFields.filter(({ hidden }) => hidden).length === bombsNumber) {
+            setIsGameWon(true);
+        }
+    };
+
+    const revealField = (id) => {
+        setGameFields(gameFields =>
+            [
+                ...gameFields.slice(0, id),
+                { ...gameFields[id], hidden: false },
+                ...gameFields.slice(id + 1),
+            ])
+        checkIsGameWon();
+    };
+
+    const checkField = (id) => {
+        if (gameFields[id].type === "bomb") {
+            setIsGameLost(true);
+        } else if (gameFields[id].bombsAround === 0) {
+            revealField(id);//reveal empty fields
+        } else {
+            revealField(id);
+        }
+    }
 
     return (
         < div className="container container--game" >
@@ -22,12 +58,12 @@ const Game = ({ gameFields, gameLineColumns, gameLineRows, isGameLost, isGameWon
                                 `game__button
                                 ${!hidden ? " game__button--hidden" : ""}
                                 ${rightClicked ? " game__button--rightClicked" : ""} js-gameButton`}
-                            onClick={() => revealField(id)}
+                            onClick={() => checkField(id)}
                         >
                         </button>
                     </div>))
                 }
-        </div >
+            </div >
         </div >
     )
 }

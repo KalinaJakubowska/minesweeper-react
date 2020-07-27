@@ -1,13 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
 
-const Form = ({ getGameProperties }) => {
+const Form = ({ getGameProperties, setGameFields, gameLineColumns, gameLineRows }) => {
     const [innerLineColumns, setInnerLineColumns] = useState(8);
     const [innerLineRows, setInnerLineRows] = useState(8);
     const [bombsNumber, setBombsNumber] = useState(10);
+
+    const createNewField = (type, hidden = true, bombsAround = 0, rightClicked = false) => {
+        setGameFields(gameFields => [
+            ...gameFields,
+            {
+                id: gameFields.length,
+                type,
+                hidden,
+                bombsAround,
+                rightClicked,
+            }]
+        );
+    };
+
+    const generateFields = () => {
+        setGameFields([]);
+        for (let i = 0; i < innerLineRows + 2; i++) {
+            for (let y = 0; y < innerLineColumns + 2; y++) {
+                if (y === 0 || y === (innerLineColumns + 1) || i === 0 || i === (innerLineRows + 1)) {
+                    createNewField("border", false);
+                } else {
+                    createNewField("field", true, 0);
+                }
+            }
+        }
+    };
+    useEffect(() => {
+        generateFields();
+    }, [bombsNumber, gameLineColumns, gameLineRows])
+
     const onFormSubmit = (event) => {
         event.preventDefault();
-        getGameProperties(+bombsNumber, +innerLineColumns, +innerLineRows);
+        getGameProperties(bombsNumber, innerLineColumns, innerLineRows);
+        generateFields();
     }
 
     return (
@@ -25,7 +56,7 @@ const Form = ({ getGameProperties }) => {
                         min="5"
                         max="25"
                         value={innerLineColumns}
-                        onChange={({ target }) => setInnerLineColumns(target.value)}
+                        onChange={({ target }) => setInnerLineColumns(+target.value)}
                         name="columnsNumber"
                         className="form__input" />
                 </label>
@@ -37,7 +68,7 @@ const Form = ({ getGameProperties }) => {
                         min="5"
                         max="20"
                         value={innerLineRows}
-                        onChange={({ target }) => setInnerLineRows(target.value)}
+                        onChange={({ target }) => setInnerLineRows(+target.value)}
                         name="rowsNumber"
                         className="form__input" />
                 </label>
@@ -49,7 +80,7 @@ const Form = ({ getGameProperties }) => {
                         min="5"
                         max="300"
                         value={bombsNumber}
-                        onChange={({ target }) => setBombsNumber(target.value)}
+                        onChange={({ target }) => setBombsNumber(+target.value)}
                         name="bombsNumber"
                         className="form__input" />
                 </label>
