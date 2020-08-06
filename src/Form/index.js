@@ -47,9 +47,9 @@ const Form = ({ getGameProperties, setGameFields, gameLineColumns, gameLineRows 
             <fieldset className="form__fieldset">
                 <legend className="form__legend">
                     Zaawansowane opcje
-                    </legend>
+                </legend>
                 <label className="form__label">Liczba kolumn
-                        <input
+                    <input
                         required
                         type="number"
                         step="1"
@@ -58,7 +58,8 @@ const Form = ({ getGameProperties, setGameFields, gameLineColumns, gameLineRows 
                         value={innerLineColumns}
                         onChange={({ target }) => setInnerLineColumns(+target.value)}
                         name="columnsNumber"
-                        className="form__input" />
+                        className="form__input"
+                    />
                 </label>
                 <label className="form__label">Liczba wierszy
                         <input
