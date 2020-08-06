@@ -23,6 +23,125 @@ function App() {
     setGameSize((innerLineColumns + 2) * (innerLineRows + 2));
   }
 
+  const idsAroundSelectedField = (index) => {
+    const idsAroundFieldTemplate = [
+      (gameLineColumns * (-1) - 1),
+      (gameLineColumns * (-1)),
+      (gameLineColumns * (-1) + 1),
+      -1,
+      1,
+      (gameLineColumns - 1),
+      (gameLineColumns),
+      (gameLineColumns + 1)
+    ];
+    return idsAroundFieldTemplate.map(id => id + index);
+  };
+
+  const checkIsGameWon = () => {
+    if (gameFields.filter(({ hidden }) => hidden).length === bombsNumber) {
+      setIsGameWon(true);
+    }
+  };
+
+  const revealField = (id) => {
+    setGameFields(gameFields =>
+      [
+        ...gameFields.slice(0, id),
+        { ...gameFields[id], hidden: false },
+        ...gameFields.slice(id + 1),
+      ])
+
+    checkIsGameWon();
+  };
+
+  const checkField = (id) => {
+    if (isItBeforeFirstLeftClick) {
+      generateBombsPlaces(id);
+      setIsItBeforeFirstLeftClick(false);
+    }
+
+    if (gameFields[id].type === "bomb") {
+      setIsGameLost(true);
+    } else if (gameFields[id].bombsAround === 0) {
+      revealField(id);//reveal empty fields
+    } else {
+      revealField(id);
+    }
+  }
+
+  const countBombsAroundFields = () => {
+    // for (let i = 0; i < gameSize; i++) {
+    //   if (gameFields[i].type === "field") {
+
+    //     const bombsAroundNumber = idsAroundSelectedField(i)
+    //       .map(id => +(gameFields[id].type === "bomb"))
+    //       .reduce((acc, curr) => acc + curr);
+
+    //     setGameFields(gameFields =>
+    //       [
+    //         ...gameFields.slice(0, i),
+    //         { ...gameFields[i], bombsAround: bombsAroundNumber },
+    //         ...gameFields.slice(i + 1),
+    //       ])
+    //   }
+    // }
+    // setGameFields(gameFields);
+  };
+
+  const generateBombsPlaces = (id) => {
+    const emptyFields = idsAroundSelectedField(id);
+    let newBombs = [];
+    let newBomb;
+    for (let i = 1; i <= bombsNumber; i++) {
+      newBomb = Math.floor(Math.random() * gameSize);
+      while (gameFields[newBomb].type !== "field"
+        || newBomb === id
+        || emptyFields.includes(newBomb)) {
+        newBomb = Math.floor(Math.random() * gameSize);
+      }
+      newBombs.push(newBomb);
+    }
+    newBombs.map(bomb => {
+      setGameFields(gameFields =>
+        [
+          ...gameFields.slice(0, bomb),
+          { ...gameFields[bomb], type: "bomb" },
+          ...gameFields.slice(bomb + 1),
+        ]
+      );
+    })
+
+    countBombsAroundFields();
+  };
+
+  const createNewField = (type, hidden = true, bombsAround = 0, rightClicked = false) => {
+    setGameFields(gameFields => [
+      ...gameFields,
+      {
+        id: gameFields.length,
+        type,
+        hidden,
+        bombsAround,
+        rightClicked,
+      }]
+    );
+  };
+
+  const generateFields = () => {
+    setGameFields([]);
+    for (let i = 0; i < gameLineRows; i++) {
+      for (let y = 0; y < gameLineColumns; y++) {
+        if (y === 0 || y === (gameLineColumns - 1) || i === 0 || i === (gameLineRows - 1)) {
+          createNewField("border", false);
+        } else {
+          createNewField("field", true, 0);
+        }
+      }
+    }
+  };
+
+
+
   return (
     <>
       <Game
@@ -38,12 +157,14 @@ function App() {
         gameSize={gameSize}
         isItBeforeFirstLeftClick={isItBeforeFirstLeftClick}
         setIsItBeforeFirstLeftClick={setIsItBeforeFirstLeftClick}
+        checkField={checkField}
       />
       <Form
         getGameProperties={getGameProperties}
         setGameFields={setGameFields}
         gameLineColumns={gameLineColumns}
-        gameLineRows={gameLineRows} />
+        gameLineRows={gameLineRows}
+        generateFields={generateFields} />
       <Footer />
     </>
   );

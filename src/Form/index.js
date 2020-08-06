@@ -1,36 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
 
-const Form = ({ getGameProperties, setGameFields, gameLineColumns, gameLineRows }) => {
+const Form = ({ getGameProperties, setGameFields, gameLineColumns, gameLineRows, generateFields }) => {
     const [innerLineColumns, setInnerLineColumns] = useState(8);
     const [innerLineRows, setInnerLineRows] = useState(8);
     const [bombsNumber, setBombsNumber] = useState(10);
 
-    const createNewField = (type, hidden = true, bombsAround = 0, rightClicked = false) => {
-        setGameFields(gameFields => [
-            ...gameFields,
-            {
-                id: gameFields.length,
-                type,
-                hidden,
-                bombsAround,
-                rightClicked,
-            }]
-        );
-    };
-
-    const generateFields = () => {
-        setGameFields([]);
-        for (let i = 0; i < innerLineRows + 2; i++) {
-            for (let y = 0; y < innerLineColumns + 2; y++) {
-                if (y === 0 || y === (innerLineColumns + 1) || i === 0 || i === (innerLineRows + 1)) {
-                    createNewField("border", false);
-                } else {
-                    createNewField("field", true, 0);
-                }
-            }
-        }
-    };
     useEffect(() => {
         generateFields();
     }, [bombsNumber, gameLineColumns, gameLineRows])
