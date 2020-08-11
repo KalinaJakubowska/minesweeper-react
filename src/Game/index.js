@@ -9,8 +9,6 @@ const Game = ({
     gameLineRows,
     isGameLost,
     setIsGameLost,
-    isGameWon,
-    setIsGameWon,
     gameSize,
     isItBeforeFirstLeftClick,
     setIsItBeforeFirstLeftClick,
@@ -28,9 +26,13 @@ const Game = ({
             >
                 {gameFields.map(({ bombsAround, type, hidden, id, rightClicked }) => (
                     <div key={id} className={`game__field
-                    ${type === "field" ? "" : " game__field--" + type}
-                    ${isGameWon && type === "bomb" ? " game__field--greenBomb" : ""} 
-                    `}>
+                        ${type === "field" ? "" : " game__field--" + type}
+                        ${gameFields.filter(({ hidden }) => hidden).length === bombsNumber
+                            && type === "bomb"
+                            ? " game__field--greenBomb"
+                            : ""
+                        }`
+                    }>
                         <button
                             className={
                                 `game__button

@@ -8,7 +8,6 @@ function App() {
   const [gameLineColumns, setGameLineColumns] = useState(10);
   const [gameLineRows, setGameLineRows] = useState(10);
   const [bombsNumber, setBombsNumber] = useState(10);
-  const [isGameWon, setIsGameWon] = useState(false);
   const [isGameLost, setIsGameLost] = useState(false);
   const [gameSize, setGameSize] = useState(gameLineColumns * gameLineRows);
   const [isItBeforeFirstLeftClick, setIsItBeforeFirstLeftClick] = useState(true);
@@ -17,7 +16,6 @@ function App() {
     setGameLineColumns(innerLineColumns + 2);
     setGameLineRows(innerLineRows + 2);
     setBombsNumber(bombsNumber);
-    setIsGameWon(false);
     setIsGameLost(false);
     setIsItBeforeFirstLeftClick(true);
     setGameSize((innerLineColumns + 2) * (innerLineRows + 2));
@@ -37,12 +35,6 @@ function App() {
     return idsAroundFieldTemplate.map(id => id + index);
   };
 
-  const checkIsGameWon = () => {
-    if (gameFields.filter(({ hidden }) => hidden).length === bombsNumber) {
-      setIsGameWon(true);
-    }
-  };
-
   const revealField = (id) => {
     setGameFields(gameFields =>
       [
@@ -50,8 +42,6 @@ function App() {
         { ...gameFields[id], hidden: false },
         ...gameFields.slice(id + 1),
       ])
-
-    checkIsGameWon();
   };
 
   const checkField = (id) => {
@@ -151,8 +141,6 @@ function App() {
         gameLineRows={gameLineRows}
         isGameLost={isGameLost}
         setIsGameLost={setIsGameLost}
-        isGameWon={isGameWon}
-        setIsGameWon={setIsGameWon}
         gameSize={gameSize}
         isItBeforeFirstLeftClick={isItBeforeFirstLeftClick}
         setIsItBeforeFirstLeftClick={setIsItBeforeFirstLeftClick}
