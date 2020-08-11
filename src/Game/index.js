@@ -26,7 +26,7 @@ const Game = ({
                     gridTemplateRows: `repeat(${gameLineRows}, 40px)`,
                 }}
             >
-                {gameFields.map(({ type, hidden, id, rightClicked }) => (
+                {gameFields.map(({ bombsAround, type, hidden, id, rightClicked }) => (
                     <div key={id} className={`game__field
                     ${type === "field" ? "" : " game__field--" + type}
                     ${isGameWon && type === "bomb" ? " game__field--greenBomb" : ""} 
@@ -39,6 +39,7 @@ const Game = ({
                             onClick={() => checkField(id)}
                         >
                         </button>
+                        {bombsAround === 0 || type === "border" ? "" : bombsAround}
                     </div>))
                 }
             </div >
