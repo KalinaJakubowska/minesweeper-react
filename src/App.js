@@ -58,6 +58,7 @@ function App() {
     if (isItBeforeFirstLeftClick) {
       generateBombsPlaces(id);
       setIsItBeforeFirstLeftClick(false);
+      return 0;
     }
 
     if (gameFields[id].type === "bomb") {
@@ -69,49 +70,47 @@ function App() {
     }
   }
 
-  const countBombsAroundFields = () => {
-    // for (let i = 0; i < gameSize; i++) {
-    //   if (gameFields[i].type === "field") {
+  const countBombsAroundFields = (newGameFields) => {
+    for (let i = 0; i < gameSize; i++) {
+      if (gameFields[i].type === "field") {
 
-    //     const bombsAroundNumber = idsAroundSelectedField(i)
-    //       .map(id => +(gameFields[id].type === "bomb"))
-    //       .reduce((acc, curr) => acc + curr);
+        const bombsAroundNumber = idsAroundSelectedField(i)
+          .map(id => +(newGameFields[id].type === "bomb"))
+          .reduce((acc, curr) => acc + curr);
 
-    //     setGameFields(gameFields =>
-    //       [
-    //         ...gameFields.slice(0, i),
-    //         { ...gameFields[i], bombsAround: bombsAroundNumber },
-    //         ...gameFields.slice(i + 1),
-    //       ])
-    //   }
-    // }
-    // setGameFields(gameFields);
+        newGameFields = [
+          ...newGameFields.slice(0, i),
+          { ...newGameFields[i], bombsAround: bombsAroundNumber },
+          ...newGameFields.slice(i + 1),
+        ]
+      }
+    }
+    setGameFields(newGameFields);
   };
 
   const generateBombsPlaces = (id) => {
     const emptyFields = idsAroundSelectedField(id);
-    let newBombs = [];
+    let newGameFields = [
+      ...gameFields.slice(0, id),
+      { ...gameFields[id], hidden: false },
+      ...gameFields.slice(id + 1),
+    ]
     let newBomb;
     for (let i = 1; i <= bombsNumber; i++) {
       newBomb = Math.floor(Math.random() * gameSize);
-      while (gameFields[newBomb].type !== "field"
+      while (newGameFields[newBomb].type !== "field"
         || newBomb === id
         || emptyFields.includes(newBomb)) {
         newBomb = Math.floor(Math.random() * gameSize);
       }
-      newBombs.push(newBomb);
-    }
-    newBombs.map(bomb => {
-      setGameFields(gameFields =>
+      newGameFields =
         [
-          ...gameFields.slice(0, bomb),
-          { ...gameFields[bomb], type: "bomb" },
-          ...gameFields.slice(bomb + 1),
+          ...newGameFields.slice(0, newBomb),
+          { ...newGameFields[newBomb], type: "bomb" },
+          ...newGameFields.slice(newBomb + 1),
         ]
-      );
-    })
-
-    countBombsAroundFields();
+    }
+    countBombsAroundFields(newGameFields);
   };
 
   const createNewField = (type, hidden = true, bombsAround = 0, rightClicked = false) => {
