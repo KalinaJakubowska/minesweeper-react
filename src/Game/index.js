@@ -29,6 +29,7 @@ const Game = ({
                         ${type === "field" ? "" : " game__field--" + type}
                         ${gameFields.filter(({ hidden }) => hidden).length === bombsNumber
                             && type === "bomb"
+                            && !isGameLost
                             ? " game__field--greenBomb"
                             : ""
                         }`
