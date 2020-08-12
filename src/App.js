@@ -35,6 +35,35 @@ function App() {
     return idsAroundFieldTemplate.map(id => id + index);
   };
 
+  const revealAllEmptyFields = (id, newGameFields = [...gameFields]) => {
+    const revealEmptyFields = (fieldIndex) => {
+
+      newGameFields = [
+        ...newGameFields.slice(0, fieldIndex),
+        { ...newGameFields[fieldIndex], hidden: false },
+        ...newGameFields.slice(fieldIndex + 1),
+      ]
+
+      for (const id of idsAroundSelectedField(fieldIndex)) {
+        if (newGameFields[id].type === "field"
+          && newGameFields[id].bombsAround === 0
+          && newGameFields[id].hidden === true) {
+
+          revealEmptyFields(id);
+        } else if (newGameFields[id].hidden === true) {
+
+          newGameFields = [
+            ...newGameFields.slice(0, id),
+            { ...newGameFields[id], hidden: false },
+            ...newGameFields.slice(id + 1),
+          ]
+        }
+      }
+    };
+    revealEmptyFields(id);
+    setGameFields(newGameFields);
+  };
+
   const revealField = (id) => {
     setGameFields(gameFields =>
       [
@@ -54,15 +83,15 @@ function App() {
     if (gameFields[id].type === "bomb") {
       setIsGameLost(true);
     } else if (gameFields[id].bombsAround === 0) {
-      revealField(id);//reveal empty fields
+      revealAllEmptyFields(id);//reveal empty fields
     } else {
       revealField(id);
     }
   }
 
-  const countBombsAroundFields = (newGameFields) => {
+  const countBombsAroundFields = (newGameFields, firstID) => {
     for (let i = 0; i < gameSize; i++) {
-      if (gameFields[i].type === "field") {
+      if (newGameFields[i].type === "field") {
 
         const bombsAroundNumber = idsAroundSelectedField(i)
           .map(id => +(newGameFields[id].type === "bomb"))
@@ -75,16 +104,12 @@ function App() {
         ]
       }
     }
-    setGameFields(newGameFields);
+    revealAllEmptyFields(firstID, newGameFields);
   };
 
   const generateBombsPlaces = (id) => {
     const emptyFields = idsAroundSelectedField(id);
-    let newGameFields = [
-      ...gameFields.slice(0, id),
-      { ...gameFields[id], hidden: false },
-      ...gameFields.slice(id + 1),
-    ]
+    let newGameFields = [...gameFields]
     let newBomb;
     for (let i = 1; i <= bombsNumber; i++) {
       newBomb = Math.floor(Math.random() * gameSize);
@@ -100,7 +125,7 @@ function App() {
           ...newGameFields.slice(newBomb + 1),
         ]
     }
-    countBombsAroundFields(newGameFields);
+    countBombsAroundFields(newGameFields, id);
   };
 
   const createNewField = (type, hidden = true, bombsAround = 0, rightClicked = false) => {
