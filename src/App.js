@@ -73,6 +73,14 @@ function App() {
       ])
   };
 
+  const revealAllBombs = () => {
+    for (let i = 0; i < gameSize; i++) {
+      if (gameFields[i].type === "bomb") {
+        revealField(i);
+      }
+    }
+  };
+
   const checkField = (id) => {
     if (isItBeforeFirstLeftClick) {
       generateBombsPlaces(id);
@@ -82,6 +90,7 @@ function App() {
 
     if (gameFields[id].type === "bomb") {
       setIsGameLost(true);
+      revealAllBombs();
     } else if (gameFields[id].bombsAround === 0) {
       revealAllEmptyFields(id);//reveal empty fields
     } else {
