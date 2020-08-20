@@ -41,6 +41,7 @@ const Game = ({
                                 ${!hidden ? " game__button--hidden" : ""}
                                 ${rightClicked ? " game__button--rightClicked" : ""}`}
                             onClick={() => checkField(id)}
+                            disabled={isGameLost}
                         >
                         </button>
                         {bombsAround === 0 || type === "border" ? "" : bombsAround}
