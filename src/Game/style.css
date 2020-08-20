@@ -19,7 +19,7 @@
 
 .game__field--bomb {
     background-color: red;
-    background-image: url("https://raw.githubusercontent.com/KalinaJakubowska/minesweeper/master/images/ico.ico");
+    background-image: url("ico.ico");
     background-size: 25px;
     background-repeat: no-repeat;
     background-position: center;
@@ -27,7 +27,7 @@
 
 .game__field--greenBomb {
     background-color: green;
-    background-image: url("https://raw.githubusercontent.com/KalinaJakubowska/minesweeper/master/images/ico.ico");
+    background-image: url("ico.ico");
     background-size: 25px;
     background-repeat: no-repeat;
     background-position: center;
@@ -51,7 +51,7 @@
 }
 
 .game__button--rightClicked {
-    background-image: url("https://raw.githubusercontent.com/KalinaJakubowska/minesweeper/master/images/ico.ico");
+    background-image: url("ico.ico");
     background-size: 25px;
     background-repeat: no-repeat;
     background-position: center;
