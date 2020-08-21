@@ -96,6 +96,9 @@ function App() {
       setIsItBeforeFirstLeftClick(false);
       return 0;
     }
+    if (gameFields[id].rightClicked) {
+      return 0;
+    }
 
     if (gameFields[id].type === "bomb") {
       setIsGameLost(true);

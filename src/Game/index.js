@@ -19,11 +19,12 @@ const Game = ({
     const onRightClick = (event, id) => {
         event.preventDefault();
         setGameFields(gameFields =>
-        [
-            ...gameFields.slice(0, id),
-            { ...gameFields[id], rightClicked: !gameFields[id].rightClicked },
-            ...gameFields.slice(id + 1),
-        ])
+            [
+                ...gameFields.slice(0, id),
+                { ...gameFields[id], rightClicked: !gameFields[id].rightClicked },
+                ...gameFields.slice(id + 1),
+            ]
+        )
     }
 
     return (
@@ -52,7 +53,7 @@ const Game = ({
                                 ${rightClicked ? " game__button--rightClicked" : ""}`}
                             onClick={() => checkField(id)}
                             onContextMenu={(event) => onRightClick(event, id)}
-                            disabled={isGameLost || rightClicked}
+                            disabled={isGameLost}
                         >
                         </button>
                         {bombsAround === 0 || type === "border" ? "" : bombsAround}
