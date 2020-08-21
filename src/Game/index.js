@@ -52,7 +52,7 @@ const Game = ({
                                 ${rightClicked ? " game__button--rightClicked" : ""}`}
                             onClick={() => checkField(id)}
                             onContextMenu={(event) => onRightClick(event, id)}
-                            disabled={isGameLost}
+                            disabled={isGameLost || rightClicked}
                         >
                         </button>
                         {bombsAround === 0 || type === "border" ? "" : bombsAround}
