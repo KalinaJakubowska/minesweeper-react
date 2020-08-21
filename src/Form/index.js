@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
 
-const Form = ({ getGameProperties, setGameFields, gameLineColumns, gameLineRows, generateFields }) => {
+const Form = ({ getGameProperties, gameLineColumns, gameLineRows, generateFields }) => {
     const [innerLineColumns, setInnerLineColumns] = useState(8);
     const [innerLineRows, setInnerLineRows] = useState(8);
     const [bombsNumber, setBombsNumber] = useState(10);

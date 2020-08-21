@@ -4,15 +4,10 @@ import "./style.css";
 const Game = ({
     gameFields,
     setGameFields,
-    bombsNumber,
     gameLineColumns,
     gameLineRows,
     isGameLost,
-    setIsGameLost,
     isGameWon,
-    gameSize,
-    isItBeforeFirstLeftClick,
-    setIsItBeforeFirstLeftClick,
     checkField,
     onDoubleClick,
 }) => {

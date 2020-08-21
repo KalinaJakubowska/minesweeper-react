@@ -203,21 +203,15 @@ function App() {
       <Game
         gameFields={gameFields}
         setGameFields={setGameFields}
-        bombsNumber={bombsNumber}
         gameLineColumns={gameLineColumns}
         gameLineRows={gameLineRows}
         isGameLost={isGameLost}
-        setIsGameLost={setIsGameLost}
         isGameWon={isGameWon}
-        gameSize={gameSize}
-        isItBeforeFirstLeftClick={isItBeforeFirstLeftClick}
-        setIsItBeforeFirstLeftClick={setIsItBeforeFirstLeftClick}
         checkField={checkField}
         onDoubleClick={onDoubleClick}
       />
       <Form
         getGameProperties={getGameProperties}
-        setGameFields={setGameFields}
         gameLineColumns={gameLineColumns}
         gameLineRows={gameLineRows}
         generateFields={generateFields} />
