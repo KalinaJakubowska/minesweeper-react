@@ -45,7 +45,7 @@ function App() {
   };
 
   const revealAllEmptyFieldsInGroup = (id, newGameFields = [...gameFields]) => {
-    const revealEmptyFieldAndFieldsAround = (fieldIndex) => {
+    const revealFieldAndFieldsAround = (fieldIndex) => {
       if (newGameFields[fieldIndex].rightClicked === false) {
         newGameFields = [
           ...newGameFields.slice(0, fieldIndex),
@@ -59,7 +59,7 @@ function App() {
           && newGameFields[id].bombsAround === 0
           && newGameFields[id].hidden === true) {
 
-          revealEmptyFieldAndFieldsAround(id);
+          revealFieldAndFieldsAround(id);
         } else if (newGameFields[id].hidden === true && newGameFields[id].rightClicked === false) {
           newGameFields = [
             ...newGameFields.slice(0, id),
@@ -69,7 +69,7 @@ function App() {
         }
       }
     };
-    revealEmptyFieldAndFieldsAround(id);
+    revealFieldAndFieldsAround(id);
     setGameFields(newGameFields);
   };
 
@@ -114,6 +114,18 @@ function App() {
     return idsAroundSelectedField(i)
       .map(id => +(newGameFields[id].type === "bomb"))
       .reduce((acc, curr) => acc + curr);
+  }
+
+  const countRightClickedAroundField = (id) => {
+    return idsAroundSelectedField(id)
+      .map(id => +(gameFields[id].rightClicked))
+      .reduce((acc, curr) => acc + curr);
+  }
+
+  const onDoubleClick = (id) => {
+    if (countRightClickedAroundField(id) === gameFields[id].bombsAround) {
+      revealAllEmptyFieldsInGroup(id);
+    }
   }
 
   const countBombsAroundAllFields = (newGameFields, firstID) => {
@@ -195,6 +207,7 @@ function App() {
         isItBeforeFirstLeftClick={isItBeforeFirstLeftClick}
         setIsItBeforeFirstLeftClick={setIsItBeforeFirstLeftClick}
         checkField={checkField}
+        onDoubleClick={onDoubleClick}
       />
       <Form
         getGameProperties={getGameProperties}

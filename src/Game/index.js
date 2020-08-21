@@ -14,6 +14,7 @@ const Game = ({
     isItBeforeFirstLeftClick,
     setIsItBeforeFirstLeftClick,
     checkField,
+    onDoubleClick,
 }) => {
 
     const onRightClick = (event, id) => {
@@ -37,15 +38,18 @@ const Game = ({
                 }}
             >
                 {gameFields.map(({ bombsAround, type, hidden, id, rightClicked }) => (
-                    <div key={id} className={`game__field
+                    <div
+                        onDoubleClick={() => onDoubleClick(id)}
+                        key={id}
+                        className={`game__field
                         ${type === "field" ? "" : " game__field--" + type}
                         ${isGameWon
-                            && type === "bomb"
-                            && !isGameLost
-                            ? " game__field--greenBomb"
-                            : ""
-                        }`
-                    }>
+                                && type === "bomb"
+                                && !isGameLost
+                                ? " game__field--greenBomb"
+                                : ""
+                            }`
+                        }>
                         <button
                             className={
                                 `game__button
