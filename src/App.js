@@ -46,12 +46,13 @@ function App() {
 
   const revealAllEmptyFields = (id, newGameFields = [...gameFields]) => {
     const revealEmptyFields = (fieldIndex) => {
-
-      newGameFields = [
-        ...newGameFields.slice(0, fieldIndex),
-        { ...newGameFields[fieldIndex], hidden: false },
-        ...newGameFields.slice(fieldIndex + 1),
-      ]
+      if (newGameFields[fieldIndex].rightClicked === false) {
+        newGameFields = [
+          ...newGameFields.slice(0, fieldIndex),
+          { ...newGameFields[fieldIndex], hidden: false },
+          ...newGameFields.slice(fieldIndex + 1),
+        ]
+      }
 
       for (const id of idsAroundSelectedField(fieldIndex)) {
         if (newGameFields[id].type === "field"
@@ -59,8 +60,7 @@ function App() {
           && newGameFields[id].hidden === true) {
 
           revealEmptyFields(id);
-        } else if (newGameFields[id].hidden === true) {
-
+        } else if (newGameFields[id].hidden === true && newGameFields[id].rightClicked === false) {
           newGameFields = [
             ...newGameFields.slice(0, id),
             { ...newGameFields[id], hidden: false },
