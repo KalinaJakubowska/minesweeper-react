@@ -110,17 +110,22 @@ function App() {
     }
   }
 
-  const countBombsAroundFields = (newGameFields, firstID) => {
+  const countBombsAroundField = (i, newGameFields = [...gameFields]) => {
+    return idsAroundSelectedField(i)
+      .map(id => +(newGameFields[id].type === "bomb"))
+      .reduce((acc, curr) => acc + curr);
+  }
+
+  const countBombsAroundAllFields = (newGameFields, firstID) => {
     for (let i = 0; i < gameSize; i++) {
       if (newGameFields[i].type === "field") {
 
-        const bombsAroundNumber = idsAroundSelectedField(i)
-          .map(id => +(newGameFields[id].type === "bomb"))
-          .reduce((acc, curr) => acc + curr);
-
         newGameFields = [
           ...newGameFields.slice(0, i),
-          { ...newGameFields[i], bombsAround: bombsAroundNumber },
+          {
+            ...newGameFields[i],
+            bombsAround: countBombsAroundField(i, newGameFields)
+          },
           ...newGameFields.slice(i + 1),
         ]
       }
@@ -146,7 +151,7 @@ function App() {
           ...newGameFields.slice(newBomb + 1),
         ]
     }
-    countBombsAroundFields(newGameFields, id);
+    countBombsAroundAllFields(newGameFields, id);
   };
 
   const createNewField = (type, hidden = true, bombsAround = 0, rightClicked = false) => {
