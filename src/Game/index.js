@@ -16,6 +16,16 @@ const Game = ({
     checkField,
 }) => {
 
+    const onRightClick = (event, id) => {
+        event.preventDefault();
+        setGameFields(gameFields =>
+        [
+            ...gameFields.slice(0, id),
+            { ...gameFields[id], rightClicked: !gameFields[id].rightClicked },
+            ...gameFields.slice(id + 1),
+        ])
+    }
+
     return (
         < div className="container container--game" >
             <div
@@ -41,6 +51,7 @@ const Game = ({
                                 ${!hidden ? " game__button--hidden" : ""}
                                 ${rightClicked ? " game__button--rightClicked" : ""}`}
                             onClick={() => checkField(id)}
+                            onContextMenu={(event) => onRightClick(event, id)}
                             disabled={isGameLost}
                         >
                         </button>
