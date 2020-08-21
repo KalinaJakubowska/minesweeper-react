@@ -18,6 +18,13 @@ function App() {
       setIsGameWon(true);
       revealAllBombs();
     }
+
+    if (gameFields.filter(({ type }) => type === "bomb").find(({ hidden }) => hidden === false)
+      && !isGameWon
+      && !isGameLost) {
+      setIsGameLost(true);
+      revealAllBombs();
+    }
   }, [gameFields])
 
   const getGameProperties = (bombsNumber, innerLineColumns, innerLineRows) => {
@@ -100,10 +107,8 @@ function App() {
       return 0;
     }
 
-    if (gameFields[id].type === "bomb") {
-      setIsGameLost(true);
-      revealAllBombs();
-    } else if (gameFields[id].bombsAround === 0) {
+    if (gameFields[id].bombsAround === 0
+      && gameFields[id].type !== "bomb") {
       revealAllEmptyFieldsInGroup(id);
     } else {
       revealField(id);
@@ -123,7 +128,8 @@ function App() {
   }
 
   const onDoubleClick = (id) => {
-    if (countRightClickedAroundField(id) === gameFields[id].bombsAround) {
+    if (countRightClickedAroundField(id) === gameFields[id].bombsAround
+      && gameFields[id].type !== "bomb") {
       revealAllEmptyFieldsInGroup(id);
     }
   }
