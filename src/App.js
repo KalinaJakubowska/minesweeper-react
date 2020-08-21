@@ -44,8 +44,8 @@ function App() {
     return idsAroundFieldTemplate.map(id => id + index);
   };
 
-  const revealAllEmptyFields = (id, newGameFields = [...gameFields]) => {
-    const revealEmptyFields = (fieldIndex) => {
+  const revealAllEmptyFieldsInGroup = (id, newGameFields = [...gameFields]) => {
+    const revealEmptyFieldAndFieldsAround = (fieldIndex) => {
       if (newGameFields[fieldIndex].rightClicked === false) {
         newGameFields = [
           ...newGameFields.slice(0, fieldIndex),
@@ -59,7 +59,7 @@ function App() {
           && newGameFields[id].bombsAround === 0
           && newGameFields[id].hidden === true) {
 
-          revealEmptyFields(id);
+          revealEmptyFieldAndFieldsAround(id);
         } else if (newGameFields[id].hidden === true && newGameFields[id].rightClicked === false) {
           newGameFields = [
             ...newGameFields.slice(0, id),
@@ -69,7 +69,7 @@ function App() {
         }
       }
     };
-    revealEmptyFields(id);
+    revealEmptyFieldAndFieldsAround(id);
     setGameFields(newGameFields);
   };
 
@@ -104,7 +104,7 @@ function App() {
       setIsGameLost(true);
       revealAllBombs();
     } else if (gameFields[id].bombsAround === 0) {
-      revealAllEmptyFields(id);//reveal empty fields
+      revealAllEmptyFieldsInGroup(id);
     } else {
       revealField(id);
     }
@@ -130,7 +130,7 @@ function App() {
         ]
       }
     }
-    revealAllEmptyFields(firstID, newGameFields);
+    revealAllEmptyFieldsInGroup(firstID, newGameFields);
   };
 
   const generateBombsPlaces = (id) => {
@@ -179,8 +179,6 @@ function App() {
       }
     }
   };
-
-
 
   return (
     <>
