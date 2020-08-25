@@ -1,9 +1,9 @@
 import React from "react";
-import "./style.css";
+import { Wrapper } from "./styled.js"
 
 const Footer = () => (
-    <footer className="footer">
+    <Wrapper>
         Kalina Jakubowska 2020
-    </footer>
+    </Wrapper>
 )
 export default Footer;
