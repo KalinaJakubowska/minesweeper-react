@@ -12,10 +12,14 @@ function App() {
   const [isGameWon, setIsGameWon] = useState(false);
   const [gameSize, setGameSize] = useState(gameLineColumns * gameLineRows);
   const [isItBeforeFirstLeftClick, setIsItBeforeFirstLeftClick] = useState(true);
+  const [bombsLeft, setBombsLeft] = useState(10);
 
   useEffect(() => {
+    setBombsLeft(bombsNumber - gameFields.filter(({ rightClicked }) => rightClicked).length)
+
     if (gameFields.filter(({ hidden }) => hidden).length === bombsNumber && !isGameLost) {
       setIsGameWon(true);
+      setBombsLeft(0);
       revealAllBombs();
     }
 
@@ -64,10 +68,13 @@ function App() {
       for (const id of idsAroundSelectedField(fieldIndex)) {
         if (newGameFields[id].type === "field"
           && newGameFields[id].bombsAround === 0
-          && newGameFields[id].hidden === true) {
-
+          && newGameFields[id].hidden === true
+          && newGameFields[id].rightClicked === false) {
           revealFieldAndFieldsAround(id);
-        } else if (newGameFields[id].hidden === true && newGameFields[id].rightClicked === false) {
+
+        } else if (newGameFields[id].hidden === true
+          && newGameFields[id].rightClicked === false) {
+
           newGameFields = [
             ...newGameFields.slice(0, id),
             { ...newGameFields[id], hidden: false },
@@ -98,7 +105,7 @@ function App() {
   };
 
   const checkField = (id) => {
-    if (isItBeforeFirstLeftClick) {
+    if (isItBeforeFirstLeftClick && !gameFields[id].rightClicked) {
       generateBombsPlaces(id);
       setIsItBeforeFirstLeftClick(false);
       return 0;
@@ -129,7 +136,8 @@ function App() {
 
   const onDoubleClick = (id) => {
     if (countRightClickedAroundField(id) === gameFields[id].bombsAround
-      && gameFields[id].type !== "bomb") {
+      && gameFields[id].type !== "bomb"
+      && !gameFields[id].rightClicked) {
       revealAllEmptyFieldsInGroup(id);
     }
   }
@@ -200,6 +208,7 @@ function App() {
 
   return (
     <>
+      <p>{bombsLeft}</p>
       <Game
         gameFields={gameFields}
         setGameFields={setGameFields}
