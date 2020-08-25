@@ -1,12 +1,13 @@
-.form {
+import styled, { css } from "styled-components";
+
+export const Wrapper = styled.form`
     width: 100%;
     max-width: 500px;
     margin: auto;
     display: flex;
     flex-direction: column;
-}
-
-.form__fieldset {
+`
+export const Fieldset = styled.fieldset`
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -14,13 +15,12 @@
     border-top: 2px solid teal;
     box-shadow: 0px 0px 10px 0px #ccc;
     margin-top: 10px;
-}
 
-.form__fieldset--hidden {
-    display: none;
-}
-
-.form__legend {
+    ${({ hidden }) => hidden && css`
+        display: none;
+    `}
+`
+export const Legend = styled.legend`
     width: fit-content;
     text-align: center;
     background-color: rgba(0, 128, 128, 0.15);
@@ -28,41 +28,27 @@
     color: teal;
     padding: 10px;
     font-weight: bold;
-}
-
-.form__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.form__label {
+`
+export const Label = styled.label`
     display: flex;
     padding: 10px;
-}
-
-.form__input {
+`
+export const Input = styled.input`
     flex-grow: 1;
     margin-left: 20px;
-}
-
-.form__button {
+`
+export const Button = styled.button`
     background-color: teal;
     border: 2px solid hsl(180, 100%, 20%);
     color: white;
     padding: 10px;
     margin-top: 10px;
-}
 
-.form__button--advanced {
-    align-self: center;
-}
-
-.form__button:hover {
+    &:hover {
     background-color: hsl(180, 100%, 30%);
     border-color: teal;
-}
-
-.form__span {
+    }
+`
+export const ErrorInfoText = styled.span`
     text-align: center;
-}
+`

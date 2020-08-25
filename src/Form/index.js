@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./style.css";
+import { Wrapper, Button, Fieldset, Legend, Label, Input, ErrorInfoText } from "./styled";
 
 const Form = ({ getGameProperties, gameLineColumns, gameLineRows, generateFields }) => {
     const [innerLineColumns, setInnerLineColumns] = useState(8);
@@ -17,14 +17,14 @@ const Form = ({ getGameProperties, gameLineColumns, gameLineRows, generateFields
     }
 
     return (
-        <form onSubmit={onFormSubmit} className="form">
-            <button className="form__button">Rozpocznij nową grę</button>
-            <fieldset className="form__fieldset">
-                <legend className="form__legend">
+        <Wrapper onSubmit={onFormSubmit} className="form">
+            <Button className="form__button">Rozpocznij nową grę</Button>
+            <Fieldset className="form__fieldset">
+                <Legend className="form__legend">
                     Zaawansowane opcje
-                </legend>
-                <label className="form__label">Liczba kolumn
-                    <input
+                </Legend>
+                <Label className="form__label">Liczba kolumn
+                    <Input
                         required
                         type="number"
                         step="1"
@@ -35,9 +35,9 @@ const Form = ({ getGameProperties, gameLineColumns, gameLineRows, generateFields
                         name="columnsNumber"
                         className="form__input"
                     />
-                </label>
-                <label className="form__label">Liczba wierszy
-                        <input
+                </Label>
+                <Label className="form__label">Liczba wierszy
+                    <Input
                         required
                         type="number"
                         step="1"
@@ -46,10 +46,11 @@ const Form = ({ getGameProperties, gameLineColumns, gameLineRows, generateFields
                         value={innerLineRows}
                         onChange={({ target }) => setInnerLineRows(+target.value)}
                         name="rowsNumber"
-                        className="form__input" />
-                </label>
-                <label className="form__label">Liczba bomb
-                        <input
+                        className="form__input"
+                    />
+                </Label>
+                <Label className="form__label">Liczba bomb
+                    <Input
                         required
                         type="number"
                         step="1"
@@ -58,11 +59,12 @@ const Form = ({ getGameProperties, gameLineColumns, gameLineRows, generateFields
                         value={bombsNumber}
                         onChange={({ target }) => setBombsNumber(+target.value)}
                         name="bombsNumber"
-                        className="form__input" />
-                </label>
-                <span className="form__span"></span>
-            </fieldset>
-        </form>
+                        className="form__input"
+                    />
+                </Label>
+                <ErrorInfoText className="form__span"></ErrorInfoText>
+            </Fieldset>
+        </Wrapper>
     )
 }
 export default Form;
