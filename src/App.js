@@ -213,7 +213,10 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Display bombsLeft={bombsLeft}></Display>
+      <Display
+        bombsLeft={bombsLeft}
+        gameLineColumns={gameLineColumns}
+      ></Display>
       <Game
         gameFields={gameFields}
         setGameFields={setGameFields}
