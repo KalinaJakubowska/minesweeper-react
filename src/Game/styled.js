@@ -7,11 +7,6 @@ export const GameBoard = styled.div`
     display: grid;
     grid-template-columns: repeat(${({ columns }) => columns}, 40px);
     grid-template-rows: repeat(${({ rows }) => rows}, 40px);
-
-    ${({ disabled }) => disabled && css`
-        pointer-events: none;
-        opacity: 0.7;`
-    }
 `
 export const GameField = styled.div`
     background-color: ${({ theme }) => theme.color.second};
@@ -31,14 +26,13 @@ export const GameField = styled.div`
     ${({ type }) => type === "border" && css`
         background-color: ${({ theme }) => theme.color.first};
     `}
-
-`
+`;
 export const GameButton = styled.button`
     display: block;
     height: 40px;
     width: 40px;
     border-radius: 0;
-    background-color: hsl(0, 0%, 80%);
+    background-color: ${({ theme }) => theme.color.shadow};
     border: 2px outset ${({ theme }) => theme.color.second};
     ${({ hidden }) => hidden && css`
         display: none;
@@ -50,4 +44,4 @@ export const GameButton = styled.button`
     background-repeat: no-repeat;
     background-position: center;
     `}
-`
+`;
