@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.css";
+import { GameButton, GameBoard, GameField } from "./styled";
 
 const Game = ({
     gameFields,
@@ -24,42 +24,29 @@ const Game = ({
     }
 
     return (
-        < div className="container container--game" >
-            <div
-                className="game"
-                style={{
-                    gridTemplateColumns: `repeat(${gameLineColumns}, 40px)`,
-                    gridTemplateRows: `repeat(${gameLineRows}, 40px)`,
-                }}
+            <GameBoard
+                columns={gameLineColumns}
+                rows={gameLineRows}
             >
                 {gameFields.map(({ bombsAround, type, hidden, id, rightClicked }) => (
-                    <div
+                    <GameField
                         onDoubleClick={() => onDoubleClick(id)}
                         key={id}
-                        className={`game__field
-                        ${type === "field" ? "" : " game__field--" + type}
-                        ${isGameWon
-                                && type === "bomb"
-                                && !isGameLost
-                                ? " game__field--greenBomb"
-                                : ""
-                            }`
-                        }>
-                        <button
-                            className={
-                                `game__button
-                                ${!hidden ? " game__button--hidden" : ""}
-                                ${rightClicked ? " game__button--rightClicked" : ""}`}
+                        type={type}
+                        won={isGameWon && !isGameLost}
+                    >
+                        <GameButton
+                            hidden={!hidden}
+                            rightClicked={rightClicked}
                             onClick={() => checkField(id)}
                             onContextMenu={(event) => onRightClick(event, id)}
                             disabled={isGameLost}
                         >
-                        </button>
-                        {bombsAround === 0 || type === "border" ? "" : bombsAround}
-                    </div>))
+                        </GameButton>
+                        {(bombsAround === 0 || type === "border") || bombsAround}
+                    </GameField>))
                 }
-            </div >
-        </div >
+            </GameBoard>
     )
 }
 export default Game;
