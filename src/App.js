@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Form from "./Form";
 import Game from "./Game";
 import Footer from "./Footer";
+import Display from "./Display";
 import { GlobalStyle } from "./GlobalStyle.js";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./theme.js";
@@ -138,8 +139,8 @@ function App() {
   }
 
   const onDoubleClick = (id) => {
-    if (countRightClickedAroundField(id) === gameFields[id].bombsAround
-      && gameFields[id].type !== "bomb"
+    if (gameFields[id].type === "field"
+      && countRightClickedAroundField(id) === gameFields[id].bombsAround
       && !gameFields[id].rightClicked) {
       revealAllEmptyFieldsInGroup(id);
     }
@@ -212,11 +213,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <div>
-        <p>{bombsLeft}</p>
-        <p>You won/lost</p>
-        <p>timer</p>
-      </div>
+      <Display bombsLeft={bombsLeft}></Display>
       <Game
         gameFields={gameFields}
         setGameFields={setGameFields}
