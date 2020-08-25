@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Form from "./Form";
 import Game from "./Game";
 import Footer from "./Footer";
+import { GlobalStyle } from "./GlobalStyle.js";
+import { ThemeProvider } from "styled-components";
+import { theme } from "./theme.js";
 
 function App() {
   const [gameFields, setGameFields] = useState([]);
@@ -207,8 +210,13 @@ function App() {
   };
 
   return (
-    <>
-      <p>{bombsLeft}</p>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <div>
+        <p>{bombsLeft}</p>
+        <p>You won/lost</p>
+        <p>timer</p>
+      </div>
       <Game
         gameFields={gameFields}
         setGameFields={setGameFields}
@@ -225,7 +233,7 @@ function App() {
         gameLineRows={gameLineRows}
         generateFields={generateFields} />
       <Footer />
-    </>
+    </ThemeProvider>
   );
 }
 
