@@ -14,14 +14,14 @@ export const GameBoard = styled.div`
     }
 `
 export const GameField = styled.div`
-    background-color: white;
+    background-color: ${({ theme }) => theme.color.second};
     font-size: 35px;
     text-align: center;
     overflow: hidden;
     user-select: none;
 
     ${({ type }) => type === "bomb" && css`
-        background-color: ${({ won }) => won ? "green" : "red"};
+        background-color: ${({ won, theme }) => won ? theme.color.winBomb : theme.color.loseBomb};
         background-image: url(${bomb});
         background-size: 25px;
         background-repeat: no-repeat;
@@ -29,7 +29,7 @@ export const GameField = styled.div`
     `}
 
     ${({ type }) => type === "border" && css`
-        background-color: teal;
+        background-color: ${({ theme }) => theme.color.first};
     `}
 
 `
@@ -39,7 +39,7 @@ export const GameButton = styled.button`
     width: 40px;
     border-radius: 0;
     background-color: hsl(0, 0%, 80%);
-    border: 2px outset white;
+    border: 2px outset ${({ theme }) => theme.color.second};
     ${({ hidden }) => hidden && css`
         display: none;
     `}
