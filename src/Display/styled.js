@@ -8,13 +8,12 @@ export const Wrapper = styled.div`
     border: 20px solid ${({ theme }) => theme.color.first};
     border-bottom: none;
     background: ${({ theme }) => theme.color.second};
-    color: ${({ theme }) => theme.color.second};
+    color: ${({ theme }) => theme.color.first};
+    font-family: 'Roboto Mono', monospace;
+    font-weight: bold;
 `
 
 export const Item = styled.p`
     margin: auto;
-    font-family: 'Roboto Mono', monospace;
-    color: teal;
     font-size: 35px;
-    font-weight: bold;
 `
