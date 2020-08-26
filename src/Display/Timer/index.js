@@ -1,9 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {useEffect} from "react";
 import { Wrapper } from "./styled.js";
 
-const Timer = ({ isGameLost, isGameWon, timeData }) => {
-    const [time, setTime] = useState(0);
-    const intervalRef = useRef(null);
+const Timer = ({
+    isGameLost,
+    isGameWon,
+    timeData,
+    time,
+    setTime,
+    intervalRef }) => {
 
     useEffect(() => {
         clearInterval(intervalRef.current);

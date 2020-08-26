@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Form from "./Form";
 import Game from "./Game";
 import Footer from "./Footer";
@@ -18,6 +18,8 @@ function App() {
   const [isItBeforeFirstLeftClick, setIsItBeforeFirstLeftClick] = useState(true);
   const [bombsLeft, setBombsLeft] = useState(10);
   const [timeData, setTimeData] = useState();
+  const [time, setTime] = useState(0);
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     if (!isGameWon) {
@@ -48,6 +50,8 @@ function App() {
     setIsGameWon(false);
     setIsItBeforeFirstLeftClick(true);
     setGameSize((innerLineColumns + 2) * (innerLineRows + 2));
+    setTime(0);
+    clearInterval(intervalRef.current);
   }
 
   const idsAroundSelectedField = (index) => {
@@ -223,6 +227,9 @@ function App() {
         bombsLeft={bombsLeft}
         gameLineColumns={gameLineColumns}
         timeData={timeData}
+        time={time}
+        setTime={setTime}
+        intervalRef={intervalRef}
       ></Display>
       <Game
         gameFields={gameFields}
