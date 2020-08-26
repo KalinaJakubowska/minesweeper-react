@@ -7,6 +7,12 @@ export const Wrapper = styled.form`
     display: flex;
     flex-direction: column;
 `
+export const ButtonWrapper = styled.div`
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 10px;
+`
 export const Fieldset = styled.fieldset`
     display: flex;
     flex-direction: column;
