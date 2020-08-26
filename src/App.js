@@ -19,7 +19,9 @@ function App() {
   const [bombsLeft, setBombsLeft] = useState(10);
 
   useEffect(() => {
-    setBombsLeft(bombsNumber - gameFields.filter(({ rightClicked }) => rightClicked).length)
+    if (!isGameWon) {
+      setBombsLeft(bombsNumber - gameFields.filter(({ rightClicked }) => rightClicked).length)
+    }
 
     if (gameFields.filter(({ hidden }) => hidden).length === bombsNumber && !isGameLost) {
       setIsGameWon(true);
