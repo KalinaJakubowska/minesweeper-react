@@ -17,6 +17,7 @@ function App() {
   const [gameSize, setGameSize] = useState(gameLineColumns * gameLineRows);
   const [isItBeforeFirstLeftClick, setIsItBeforeFirstLeftClick] = useState(true);
   const [bombsLeft, setBombsLeft] = useState(10);
+  const [timeData, setTimeData] = useState();
 
   useEffect(() => {
     if (!isGameWon) {
@@ -27,6 +28,7 @@ function App() {
       setIsGameWon(true);
       setBombsLeft(0);
       revealAllBombs();
+      setTimeData({...timeData, endDate: new Date()})
     }
 
     if (gameFields.filter(({ type }) => type === "bomb").find(({ hidden }) => hidden === false)
@@ -34,6 +36,7 @@ function App() {
       && !isGameLost) {
       setIsGameLost(true);
       revealAllBombs();
+      setTimeData({...timeData, endDate: new Date()})
     }
   }, [gameFields])
 
@@ -114,6 +117,7 @@ function App() {
     if (isItBeforeFirstLeftClick && !gameFields[id].rightClicked) {
       generateBombsPlaces(id);
       setIsItBeforeFirstLeftClick(false);
+      setTimeData({startDate: new Date()});
       return 0;
     }
     if (gameFields[id].rightClicked) {
@@ -218,6 +222,7 @@ function App() {
       <Display
         bombsLeft={bombsLeft}
         gameLineColumns={gameLineColumns}
+        timeData={timeData}
       ></Display>
       <Game
         gameFields={gameFields}
