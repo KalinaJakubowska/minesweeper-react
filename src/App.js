@@ -6,12 +6,13 @@ import Display from "./Display";
 import { GlobalStyle } from "./GlobalStyle.js";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./theme.js";
+import { useStateItem } from "./useStateItem.js";
 
 function App() {
   const [gameFields, setGameFields] = useState([]);
-  const [gameLineColumns, setGameLineColumns] = useState(10);
-  const [gameLineRows, setGameLineRows] = useState(10);
-  const [bombsNumber, setBombsNumber] = useState(10);
+  const [gameLineColumns, setGameLineColumns] = useStateItem("gameLineColumns", 10);
+  const [gameLineRows, setGameLineRows] = useStateItem("gameLineRows", 10);
+  const [bombsNumber, setBombsNumber] = useStateItem("bombsNumber", 10);
   const [isGameLost, setIsGameLost] = useState(false);
   const [isGameWon, setIsGameWon] = useState(false);
   const [gameSize, setGameSize] = useState(gameLineColumns * gameLineRows);
@@ -30,7 +31,7 @@ function App() {
       setIsGameWon(true);
       setBombsLeft(0);
       revealAllBombs();
-      setTimeData({...timeData, endDate: new Date()})
+      setTimeData({ ...timeData, endDate: new Date() })
     }
 
     if (gameFields.filter(({ type }) => type === "bomb").find(({ hidden }) => hidden === false)
@@ -38,7 +39,7 @@ function App() {
       && !isGameLost) {
       setIsGameLost(true);
       revealAllBombs();
-      setTimeData({...timeData, endDate: new Date()})
+      setTimeData({ ...timeData, endDate: new Date() })
     }
   }, [gameFields])
 
@@ -121,7 +122,7 @@ function App() {
     if (isItBeforeFirstLeftClick && !gameFields[id].rightClicked) {
       generateBombsPlaces(id);
       setIsItBeforeFirstLeftClick(false);
-      setTimeData({startDate: new Date()});
+      setTimeData({ startDate: new Date() });
       return 0;
     }
     if (gameFields[id].rightClicked) {
