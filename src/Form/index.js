@@ -9,12 +9,13 @@ import {
     ErrorInfoText,
     ButtonWrapper
 } from "./styled";
+import { useStateItem } from "./../useStateItem.js";
 
 const Form = ({ getGameProperties, gameLineColumns, gameLineRows, generateFields }) => {
-    const [innerLineColumns, setInnerLineColumns] = useState(8);
-    const [innerLineRows, setInnerLineRows] = useState(8);
-    const [bombsNumber, setBombsNumber] = useState(10);
-    const [isDisabled, setIsDisabled] = useState(true);
+    const [innerLineColumns, setInnerLineColumns] = useStateItem("innerLineColumns", 8);
+    const [innerLineRows, setInnerLineRows] = useStateItem("innerLineRows", 8);
+    const [bombsNumber, setBombsNumber] = useStateItem("bombsNumberForm", 10);
+    const [isDisabled, setIsDisabled] = useStateItem("isDisabled", true);
 
     useEffect(() => {
         generateFields();
