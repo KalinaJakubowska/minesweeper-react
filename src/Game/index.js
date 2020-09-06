@@ -31,6 +31,7 @@ const Game = ({
                 {gameFields.map(({ bombsAround, type, hidden, id, rightClicked }) => (
                     <GameField
                         onDoubleClick={() => onDoubleClick(id)}
+                        onContextMenu={(event) => event.preventDefault()}
                         key={id}
                         type={type}
                         won={isGameWon && !isGameLost}
