@@ -20,6 +20,7 @@ function App() {
   const [bombsLeft, setBombsLeft] = useState(10);
   const [timeData, setTimeData] = useState();
   const [time, setTime] = useState(0);
+  const [bestResults, setBestResults] = useState([]);
   const intervalRef = useRef(null);
 
   useEffect(() => {
@@ -231,6 +232,8 @@ function App() {
         time={time}
         setTime={setTime}
         intervalRef={intervalRef}
+        bestResults={bestResults}
+        setBestResults={setBestResults}
       ></Display>
       <Game
         gameFields={gameFields}
