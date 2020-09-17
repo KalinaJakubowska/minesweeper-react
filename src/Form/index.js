@@ -10,12 +10,8 @@ import {
     ButtonWrapper,
 } from "./styled";
 import { useStateItem } from "./../useStateItem.js";
-import { selectGameData } from "../gameSlice";
-import { useSelector } from "react-redux";
 
 const Form = ({ getGameProperties, generateFields }) => {
-    const { gameLineColumns, gameLineRows } = useSelector(selectGameData);
-
     const [innerLineColumns, setInnerLineColumns] = useStateItem("innerLineColumns", 8);
     const [innerLineRows, setInnerLineRows] = useStateItem("innerLineRows", 8);
     const [bombsNumber, setBombsNumber] = useStateItem("bombsNumberForm", 10);
