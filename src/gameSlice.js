@@ -41,6 +41,17 @@ const gameSlice = createSlice({
         setBombsLeft: (state, { payload }) => {
             state.bombsLeft = payload;
         },
+        createNewField: (state, { payload }) => {
+            state.gameFields.push(
+                {
+                    id: state.gameFields.length,
+                    type: payload[0],
+                    hidden: payload[1],
+                    bombsAround: 0,
+                    rightClicked: false,
+                }
+            )
+        },
     },
 });
 
@@ -54,6 +65,8 @@ export const {
     setGameLineRows,
     setIsItBeforeFirstLeftClick,
     setGameFields,
+    createNewField
 } = gameSlice.actions;
 export const selectGameData = state => state.gameData;
+export const selectGameFields = state => state.gameData.gameFields;
 export default gameSlice.reducer;
