@@ -4,7 +4,7 @@ const gameSlice = createSlice({
     name: "gameData",
     initialState: {
         gameFields: [],
-        gameLineColumn: 10,
+        gameLineColumns: 10,
         gameLineRows: 10,
         bombsNumber: 10,
         isGameLost: false,
@@ -17,7 +17,7 @@ const gameSlice = createSlice({
         setGameFields: (state, { payload }) => {
             state.gameFields = payload;
         },
-        setGameLineColumn: (state, { payload }) => {
+        setGameLineColumns: (state, { payload }) => {
             state.gameLineColumn = payload;
         },
         setGameLineRows: (state, { payload }) => {
