@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
     Wrapper,
     Button,
@@ -20,10 +20,6 @@ const Form = ({ getGameProperties, generateFields }) => {
     const [innerLineRows, setInnerLineRows] = useStateItem("innerLineRows", 8);
     const [bombsNumber, setBombsNumber] = useStateItem("bombsNumberForm", 10);
     const [isDisabled, setIsDisabled] = useStateItem("isDisabled", true);
-
-    useEffect(() => {
-        generateFields();
-    }, [bombsNumber, gameLineColumns, gameLineRows])
 
     const onFormSubmit = (event) => {
         event.preventDefault();

@@ -40,6 +40,10 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    generateFields();
+  }, [bombsNumber, gameLineColumns, gameLineRows])
+
+  useEffect(() => {
     if (!isGameWon) {
       setBombsLeft(bombsNumber - gameFields.filter(({ rightClicked }) => rightClicked).length)
     }
