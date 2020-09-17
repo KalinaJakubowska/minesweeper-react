@@ -2,17 +2,16 @@ import React from "react";
 import Timer from "./Timer";
 import { Wrapper, Item } from "./styled.js";
 import { useSelector } from "react-redux";
-import { selectGameData } from "../gameSlice";
+import { selectGameData, selectBombsLeft } from "../gameSlice";
 
 const Display = ({
-    bombsLeft,
     timeData,
     time,
     setTime,
     intervalRef
 }) => {
     const { gameLineColumns } = useSelector(selectGameData);
-
+    const bombsLeft = useSelector(selectBombsLeft);
     return (
         <Wrapper columns={gameLineColumns}>
             <Item>{bombsLeft}</Item>
@@ -25,6 +24,6 @@ const Display = ({
             <Item>X</Item>
         </Wrapper>
     );
-}
+};
 
 export default Display;

@@ -6,7 +6,6 @@ import Display from "./Display";
 import { GlobalStyle } from "./GlobalStyle.js";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./theme.js";
-import { useStateItem } from "./useStateItem.js";
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectGameData,
@@ -31,7 +30,6 @@ function App() {
 
   const [gameSize, setGameSize] = useState(gameLineColumns * gameLineRows);
   const [isItBeforeFirstLeftClick, setIsItBeforeFirstLeftClick] = useState(true);
-  const [bombsLeft, setBombsLeft] = useState(10);
   const [timeData, setTimeData] = useState();
   const [time, setTime] = useState(0);
   const [bestResults, setBestResults] = useState([]);
@@ -44,13 +42,8 @@ function App() {
   }, [bombsNumber, gameLineColumns, gameLineRows])
 
   useEffect(() => {
-    if (!isGameWon) {
-      setBombsLeft(bombsNumber - gameFields.filter(({ rightClicked }) => rightClicked).length)
-    }
-
     if (gameFields.filter(({ hidden }) => hidden).length === bombsNumber && !isGameLost) {
       dispatch(setIsGameWon(true));
-      setBombsLeft(0);
       revealAllBombs();
       setTimeData({ ...timeData, endDate: new Date() })
     }
@@ -62,7 +55,7 @@ function App() {
       revealAllBombs();
       setTimeData({ ...timeData, endDate: new Date() })
     }
-  }, [gameFields])
+  }, [gameFields]);
 
   const getGameProperties = (bombsNumber, innerLineColumns, innerLineRows) => {
     dispatch(setGameLineColumns(innerLineColumns + 2));
@@ -74,7 +67,7 @@ function App() {
     setGameSize((innerLineColumns + 2) * (innerLineRows + 2));
     setTime(0);
     clearInterval(intervalRef.current);
-  }
+  };
 
   const idsAroundSelectedField = (index) => {
     const idsAroundFieldTemplate = [
@@ -188,7 +181,7 @@ function App() {
 
   const generateBombsPlaces = (id) => {
     const emptyFields = idsAroundSelectedField(id);
-    let newGameFields = [...gameFields]
+    let newGameFields = [...gameFields];
     let newBomb;
     for (let i = 1; i <= bombsNumber; i++) {
       newBomb = Math.floor(Math.random() * gameSize);
@@ -224,7 +217,6 @@ function App() {
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <Display
-        bombsLeft={bombsLeft}
         timeData={timeData}
         time={time}
         setTime={setTime}
@@ -243,6 +235,6 @@ function App() {
       <Footer />
     </ThemeProvider>
   );
-}
+};
 
 export default App;
