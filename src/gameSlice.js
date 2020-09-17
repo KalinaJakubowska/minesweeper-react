@@ -9,7 +9,6 @@ const gameSlice = createSlice({
         bombsNumber: 10,
         isGameLost: false,
         isGameWon: false,
-        isItBeforeFirstLeftClick: true,
     },
     reducers: {
         setGameFields: (state, { payload }) => {
@@ -29,9 +28,6 @@ const gameSlice = createSlice({
         },
         setIsGameWon: (state, { payload }) => {
             state.isGameWon = payload;
-        },
-        setIsItBeforeFirstLeftClick: (state, { payload }) => {
-            state.isItBeforeFirstLeftClick = payload;
         },
         createNewField: (state, { payload }) => {
             state.gameFields.push(
@@ -56,7 +52,6 @@ export const {
     setBombsNumber,
     setGameLineColumns,
     setGameLineRows,
-    setIsItBeforeFirstLeftClick,
     setGameFields,
     createNewField,
     revealField,
@@ -75,5 +70,9 @@ export const selectBombsLeft = state => {
             )
     );
 };
+export const selectIsGameStarted = (state) => {
+    return !selectGameFields(state).filter(field => field.type !== "border"
+        && field.hidden === false).length
+}
 
 export default gameSlice.reducer;

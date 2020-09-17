@@ -14,6 +14,7 @@ import {
   selectIsGameWon,
   setGameFields,
   setIsGameLost,
+  selectIsGameStarted,
   setIsGameWon,
   setGameLineColumns,
   setGameLineRows,
@@ -28,7 +29,7 @@ function App() {
   const isGameWon = useSelector(selectIsGameWon);
   const { gameLineColumns, gameLineRows, bombsNumber } = useSelector(selectGameData);
 
-  const [isItBeforeFirstLeftClick, setIsItBeforeFirstLeftClick] = useState(true);
+  const isGameStarted = useSelector(selectIsGameStarted);
   const [timeData, setTimeData] = useState();
   const [time, setTime] = useState(0);
   const [bestResults, setBestResults] = useState([]);
@@ -64,7 +65,6 @@ function App() {
     dispatch(setBombsNumber(bombsNumber));
     dispatch(setIsGameLost(false));
     dispatch(setIsGameWon(false));
-    setIsItBeforeFirstLeftClick(true);
     setTime(0);
     clearInterval(intervalRef.current);
   };
@@ -124,9 +124,8 @@ function App() {
   };
 
   const checkField = (id) => {
-    if (isItBeforeFirstLeftClick && !gameFields[id].rightClicked) {
+    if (isGameStarted && !gameFields[id].rightClicked) {
       generateBombsPlaces(id);
-      setIsItBeforeFirstLeftClick(false);
       setTimeData({ startDate: new Date() });
       return 0;
     }
