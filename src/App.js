@@ -11,18 +11,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectGameData,
   selectGameFields,
+  selectIsGameLost,
   setGameFields,
+  setIsGameLost,
   createNewField,
-  revealField
+  revealField,
 } from './gameSlice';
 
 function App() {
   const gameFields = useSelector(selectGameFields);
+  const { isGameLost} = useSelector(selectIsGameLost);
 
   const [gameLineColumns, setGameLineColumns] = useStateItem("gameLineColumns", 10);
   const [gameLineRows, setGameLineRows] = useStateItem("gameLineRows", 10);
   const [bombsNumber, setBombsNumber] = useStateItem("bombsNumber", 10);
-  const [isGameLost, setIsGameLost] = useState(false);
   const [isGameWon, setIsGameWon] = useState(false);
   const [gameSize, setGameSize] = useState(gameLineColumns * gameLineRows);
   const [isItBeforeFirstLeftClick, setIsItBeforeFirstLeftClick] = useState(true);
@@ -50,7 +52,7 @@ function App() {
     if (gameFields.filter(({ type }) => type === "bomb").find(({ hidden }) => hidden === false)
       && !isGameWon
       && !isGameLost) {
-      setIsGameLost(true);
+      dispatch(setIsGameLost(true));
       revealAllBombs();
       setTimeData({ ...timeData, endDate: new Date() })
     }
@@ -60,7 +62,7 @@ function App() {
     setGameLineColumns(innerLineColumns + 2);
     setGameLineRows(innerLineRows + 2);
     setBombsNumber(bombsNumber);
-    setIsGameLost(false);
+    dispatch(setIsGameLost(false));
     setIsGameWon(false);
     setIsItBeforeFirstLeftClick(true);
     setGameSize((innerLineColumns + 2) * (innerLineRows + 2));
@@ -228,7 +230,6 @@ function App() {
       <Game
         gameLineColumns={gameLineColumns}
         gameLineRows={gameLineRows}
-        isGameLost={isGameLost}
         isGameWon={isGameWon}
         checkField={checkField}
         onDoubleClick={onDoubleClick}

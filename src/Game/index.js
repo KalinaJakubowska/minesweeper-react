@@ -1,17 +1,17 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GameButton, GameBoard, GameField } from "./styled";
-import { selectGameFields, setGameFields } from "../gameSlice"
+import { selectGameFields, selectIsGameLost, setGameFields } from "../gameSlice"
 
 const Game = ({
     gameLineColumns,
     gameLineRows,
-    isGameLost,
     isGameWon,
     checkField,
     onDoubleClick,
 }) => {
     const gameFields = useSelector(selectGameFields);
+    const isGameLost = useSelector(selectIsGameLost);
     const dispatch = useDispatch();
 
     const onRightClick = (event, id) => {
@@ -23,7 +23,7 @@ const Game = ({
             ...gameFields.slice(id + 1),
         ]
         ))
-    }
+    };
 
     return (
         <GameBoard
@@ -50,6 +50,7 @@ const Game = ({
                 </GameField>))
             }
         </GameBoard>
-    )
-}
+    );
+};
+
 export default Game;
