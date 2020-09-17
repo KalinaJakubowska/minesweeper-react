@@ -7,14 +7,14 @@ import {
     Label,
     Input,
     ErrorInfoText,
-    ButtonWrapper
+    ButtonWrapper,
 } from "./styled";
 import { useStateItem } from "./../useStateItem.js";
 import { selectGameData } from "../gameSlice";
 import { useSelector } from "react-redux";
 
-const Form = ({ getGameProperties, gameLineRows, generateFields }) => {
-    const { gameLineColumns } = useSelector(selectGameData);
+const Form = ({ getGameProperties, generateFields }) => {
+    const { gameLineColumns, gameLineRows } = useSelector(selectGameData);
 
     const [innerLineColumns, setInnerLineColumns] = useStateItem("innerLineColumns", 8);
     const [innerLineRows, setInnerLineRows] = useStateItem("innerLineRows", 8);
@@ -29,7 +29,7 @@ const Form = ({ getGameProperties, gameLineRows, generateFields }) => {
         event.preventDefault();
         getGameProperties(bombsNumber, innerLineColumns, innerLineRows);
         generateFields();
-    }
+    };
 
     const onButtonClick = (columns, rows, bombs, level) => {
         if (level === 4) {
@@ -40,7 +40,7 @@ const Form = ({ getGameProperties, gameLineRows, generateFields }) => {
         setInnerLineColumns(columns);
         setInnerLineRows(rows);
         setBombsNumber(bombs);
-    }
+    };
 
     return (
         <Wrapper onSubmit={onFormSubmit} className="form">
@@ -101,6 +101,6 @@ const Form = ({ getGameProperties, gameLineRows, generateFields }) => {
                 <ErrorInfoText className="form__span"></ErrorInfoText>
             </Fieldset>
         </Wrapper>
-    )
-}
+    );
+};
 export default Form;

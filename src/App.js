@@ -17,6 +17,7 @@ import {
   setIsGameLost,
   setIsGameWon,
   setGameLineColumns,
+  setGameLineRows,
   createNewField,
   revealField,
 } from './gameSlice';
@@ -25,9 +26,8 @@ function App() {
   const gameFields = useSelector(selectGameFields);
   const isGameLost = useSelector(selectIsGameLost);
   const isGameWon = useSelector(selectIsGameWon);
-  const { gameLineColumns } = useSelector(selectGameData);
+  const { gameLineColumns, gameLineRows } = useSelector(selectGameData);
 
-  const [gameLineRows, setGameLineRows] = useStateItem("gameLineRows", 10);
   const [bombsNumber, setBombsNumber] = useStateItem("bombsNumber", 10);
   const [gameSize, setGameSize] = useState(gameLineColumns * gameLineRows);
   const [isItBeforeFirstLeftClick, setIsItBeforeFirstLeftClick] = useState(true);
@@ -62,7 +62,7 @@ function App() {
 
   const getGameProperties = (bombsNumber, innerLineColumns, innerLineRows) => {
     dispatch(setGameLineColumns(innerLineColumns + 2));
-    setGameLineRows(innerLineRows + 2);
+    dispatch(setGameLineRows(innerLineRows + 2));
     setBombsNumber(bombsNumber);
     dispatch(setIsGameLost(false));
     dispatch(setIsGameWon(false));
@@ -229,14 +229,12 @@ function App() {
         setBestResults={setBestResults}
       ></Display>
       <Game
-        gameLineRows={gameLineRows}
         isGameWon={isGameWon}
         checkField={checkField}
         onDoubleClick={onDoubleClick}
       />
       <Form
         getGameProperties={getGameProperties}
-        gameLineRows={gameLineRows}
         generateFields={generateFields} />
       <Footer />
     </ThemeProvider>

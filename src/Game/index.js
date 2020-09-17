@@ -4,14 +4,13 @@ import { GameButton, GameBoard, GameField } from "./styled";
 import { selectGameData, selectGameFields, selectIsGameLost, selectIsGameWon, setGameFields } from "../gameSlice"
 
 const Game = ({
-    gameLineRows,
     checkField,
     onDoubleClick,
 }) => {
     const gameFields = useSelector(selectGameFields);
     const isGameLost = useSelector(selectIsGameLost);
     const isGameWon = useSelector(selectIsGameWon);
-    const { gameLineColumns } = useSelector(selectGameData);
+    const { gameLineColumns, gameLineRows } = useSelector(selectGameData);
 
     const dispatch = useDispatch();
 
