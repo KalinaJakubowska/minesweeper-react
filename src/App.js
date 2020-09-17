@@ -225,7 +225,6 @@ function App() {
         setBestResults={setBestResults}
       ></Display>
       <Game
-        isGameWon={isGameWon}
         checkField={checkField}
         onDoubleClick={onDoubleClick}
       />
