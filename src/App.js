@@ -7,9 +7,12 @@ import { GlobalStyle } from "./GlobalStyle.js";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./theme.js";
 import { useStateItem } from "./useStateItem.js";
+import { useDispatch, useSelector } from 'react-redux';
+import { selectGameData, selectGameFields, setGameFields, createNewField } from './gameSlice';
 
 function App() {
-  const [gameFields, setGameFields] = useState([]);
+  const gameFields = useSelector(selectGameFields);
+
   const [gameLineColumns, setGameLineColumns] = useStateItem("gameLineColumns", 10);
   const [gameLineRows, setGameLineRows] = useStateItem("gameLineRows", 10);
   const [bombsNumber, setBombsNumber] = useStateItem("bombsNumber", 10);
@@ -22,6 +25,9 @@ function App() {
   const [time, setTime] = useState(0);
   const [bestResults, setBestResults] = useState([]);
   const intervalRef = useRef(null);
+  const gameData = useSelector(selectGameData);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!isGameWon) {
@@ -99,16 +105,15 @@ function App() {
       }
     };
     revealFieldAndFieldsAround(id);
-    setGameFields(newGameFields);
+    dispatch(setGameFields(newGameFields));
   };
 
   const revealField = (id) => {
-    setGameFields(gameFields =>
-      [
-        ...gameFields.slice(0, id),
-        { ...gameFields[id], hidden: false },
-        ...gameFields.slice(id + 1),
-      ])
+    dispatch(setGameFields([
+      ...gameFields.slice(0, id),
+      { ...gameFields[id], hidden: false },
+      ...gameFields.slice(id + 1),
+    ]))
   };
 
   const revealAllBombs = () => {
@@ -196,27 +201,14 @@ function App() {
     countBombsAroundAllFields(newGameFields, id);
   };
 
-  const createNewField = (type, hidden = true, bombsAround = 0, rightClicked = false) => {
-    setGameFields(gameFields => [
-      ...gameFields,
-      {
-        id: gameFields.length,
-        type,
-        hidden,
-        bombsAround,
-        rightClicked,
-      }]
-    );
-  };
-
   const generateFields = () => {
-    setGameFields([]);
+    dispatch(setGameFields([]));
     for (let i = 0; i < gameLineRows; i++) {
       for (let y = 0; y < gameLineColumns; y++) {
         if (y === 0 || y === (gameLineColumns - 1) || i === 0 || i === (gameLineRows - 1)) {
-          createNewField("border", false);
+          dispatch(createNewField(["border", false]));
         } else {
-          createNewField("field", true, 0);
+          dispatch(createNewField(["field", true]));
         }
       }
     }
@@ -236,8 +228,6 @@ function App() {
         setBestResults={setBestResults}
       ></Display>
       <Game
-        gameFields={gameFields}
-        setGameFields={setGameFields}
         gameLineColumns={gameLineColumns}
         gameLineRows={gameLineRows}
         isGameLost={isGameLost}
