@@ -28,7 +28,6 @@ function App() {
   const isGameWon = useSelector(selectIsGameWon);
   const { gameLineColumns, gameLineRows, bombsNumber } = useSelector(selectGameData);
 
-  const [gameSize, setGameSize] = useState(gameLineColumns * gameLineRows);
   const [isItBeforeFirstLeftClick, setIsItBeforeFirstLeftClick] = useState(true);
   const [timeData, setTimeData] = useState();
   const [time, setTime] = useState(0);
@@ -36,6 +35,8 @@ function App() {
   const intervalRef = useRef(null);
 
   const dispatch = useDispatch();
+
+  const gameSize = gameLineColumns * gameLineRows;
 
   useEffect(() => {
     generateFields();
@@ -64,7 +65,6 @@ function App() {
     dispatch(setIsGameLost(false));
     dispatch(setIsGameWon(false));
     setIsItBeforeFirstLeftClick(true);
-    setGameSize((innerLineColumns + 2) * (innerLineRows + 2));
     setTime(0);
     clearInterval(intervalRef.current);
   };

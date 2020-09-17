@@ -9,7 +9,6 @@ const gameSlice = createSlice({
         bombsNumber: 10,
         isGameLost: false,
         isGameWon: false,
-        gameSize: 100,
         isItBeforeFirstLeftClick: true,
     },
     reducers: {
@@ -31,9 +30,6 @@ const gameSlice = createSlice({
         setIsGameWon: (state, { payload }) => {
             state.isGameWon = payload;
         },
-        setGameSize: (state, { payload }) => {
-            state.gameSize = payload;
-        },
         setIsItBeforeFirstLeftClick: (state, { payload }) => {
             state.isItBeforeFirstLeftClick = payload;
         },
@@ -46,7 +42,7 @@ const gameSlice = createSlice({
                     bombsAround: 0,
                     rightClicked: false,
                 }
-            )
+            );
         },
         revealField: ({ gameFields }, { payload: id }) => {
             gameFields[id].hidden = false;
@@ -58,7 +54,6 @@ export const {
     setIsGameWon,
     setIsGameLost,
     setBombsNumber,
-    setGameSize,
     setGameLineColumns,
     setGameLineRows,
     setIsItBeforeFirstLeftClick,
