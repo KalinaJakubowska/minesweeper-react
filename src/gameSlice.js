@@ -52,6 +52,9 @@ const gameSlice = createSlice({
                 }
             )
         },
+        revealField: ({ gameFields }, { payload: id }) => {
+            gameFields[id].hidden = false;
+        },
     },
 });
 
@@ -65,7 +68,8 @@ export const {
     setGameLineRows,
     setIsItBeforeFirstLeftClick,
     setGameFields,
-    createNewField
+    createNewField,
+    revealField,
 } = gameSlice.actions;
 export const selectGameData = state => state.gameData;
 export const selectGameFields = state => state.gameData.gameFields;

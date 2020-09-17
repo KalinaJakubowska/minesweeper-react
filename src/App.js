@@ -8,7 +8,13 @@ import { ThemeProvider } from "styled-components";
 import { theme } from "./theme.js";
 import { useStateItem } from "./useStateItem.js";
 import { useDispatch, useSelector } from 'react-redux';
-import { selectGameData, selectGameFields, setGameFields, createNewField } from './gameSlice';
+import {
+  selectGameData,
+  selectGameFields,
+  setGameFields,
+  createNewField,
+  revealField
+} from './gameSlice';
 
 function App() {
   const gameFields = useSelector(selectGameFields);
@@ -108,18 +114,10 @@ function App() {
     dispatch(setGameFields(newGameFields));
   };
 
-  const revealField = (id) => {
-    dispatch(setGameFields([
-      ...gameFields.slice(0, id),
-      { ...gameFields[id], hidden: false },
-      ...gameFields.slice(id + 1),
-    ]))
-  };
-
   const revealAllBombs = () => {
     for (let i = 0; i < gameSize; i++) {
       if (gameFields[i].type === "bomb") {
-        revealField(i);
+        dispatch(revealField(i));
       }
     }
   };
@@ -139,21 +137,21 @@ function App() {
       && gameFields[id].type !== "bomb") {
       revealAllEmptyFieldsInGroup(id);
     } else {
-      revealField(id);
+      dispatch(revealField(id));
     }
-  }
+  };
 
   const countBombsAroundField = (i, newGameFields = [...gameFields]) => {
     return idsAroundSelectedField(i)
       .map(id => +(newGameFields[id].type === "bomb"))
       .reduce((acc, curr) => acc + curr);
-  }
+  };
 
   const countRightClickedAroundField = (id) => {
     return idsAroundSelectedField(id)
       .map(id => +(gameFields[id].rightClicked))
       .reduce((acc, curr) => acc + curr);
-  }
+  };
 
   const onDoubleClick = (id) => {
     if (gameFields[id].type === "field"
@@ -161,7 +159,7 @@ function App() {
       && !gameFields[id].rightClicked) {
       revealAllEmptyFieldsInGroup(id);
     }
-  }
+  };
 
   const countBombsAroundAllFields = (newGameFields, firstID) => {
     for (let i = 0; i < gameSize; i++) {
