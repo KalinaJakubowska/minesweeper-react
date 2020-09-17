@@ -1,10 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GameButton, GameBoard, GameField } from "./styled";
-import { selectGameFields, selectIsGameLost, selectIsGameWon, setGameFields } from "../gameSlice"
+import { selectGameData, selectGameFields, selectIsGameLost, selectIsGameWon, setGameFields } from "../gameSlice"
 
 const Game = ({
-    gameLineColumns,
     gameLineRows,
     checkField,
     onDoubleClick,
@@ -12,6 +11,8 @@ const Game = ({
     const gameFields = useSelector(selectGameFields);
     const isGameLost = useSelector(selectIsGameLost);
     const isGameWon = useSelector(selectIsGameWon);
+    const { gameLineColumns } = useSelector(selectGameData);
+
     const dispatch = useDispatch();
 
     const onRightClick = (event, id) => {
@@ -21,8 +22,7 @@ const Game = ({
             ...gameFields.slice(0, id),
             { ...gameFields[id], rightClicked: !gameFields[id].rightClicked },
             ...gameFields.slice(id + 1),
-        ]
-        ))
+        ]));
     };
 
     return (

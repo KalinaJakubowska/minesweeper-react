@@ -1,14 +1,19 @@
 import React from "react";
 import Timer from "./Timer";
 import { Wrapper, Item } from "./styled.js";
+import { useSelector } from "react-redux";
+import { selectGameData } from "../gameSlice";
 
 const Display = ({
     bombsLeft,
-    gameLineColumns,
     timeData,
     time,
     setTime,
-    intervalRef }) => (
+    intervalRef
+}) => {
+    const { gameLineColumns } = useSelector(selectGameData);
+
+    return (
         <Wrapper columns={gameLineColumns}>
             <Item>{bombsLeft}</Item>
             <Timer
@@ -19,6 +24,7 @@ const Display = ({
             />
             <Item>X</Item>
         </Wrapper>
-    )
+    );
+}
 
 export default Display;

@@ -16,6 +16,7 @@ import {
   setGameFields,
   setIsGameLost,
   setIsGameWon,
+  setGameLineColumns,
   createNewField,
   revealField,
 } from './gameSlice';
@@ -24,8 +25,8 @@ function App() {
   const gameFields = useSelector(selectGameFields);
   const isGameLost = useSelector(selectIsGameLost);
   const isGameWon = useSelector(selectIsGameWon);
+  const { gameLineColumns } = useSelector(selectGameData);
 
-  const [gameLineColumns, setGameLineColumns] = useStateItem("gameLineColumns", 10);
   const [gameLineRows, setGameLineRows] = useStateItem("gameLineRows", 10);
   const [bombsNumber, setBombsNumber] = useStateItem("bombsNumber", 10);
   const [gameSize, setGameSize] = useState(gameLineColumns * gameLineRows);
@@ -35,7 +36,6 @@ function App() {
   const [time, setTime] = useState(0);
   const [bestResults, setBestResults] = useState([]);
   const intervalRef = useRef(null);
-  const gameData = useSelector(selectGameData);
 
   const dispatch = useDispatch();
 
@@ -61,7 +61,7 @@ function App() {
   }, [gameFields])
 
   const getGameProperties = (bombsNumber, innerLineColumns, innerLineRows) => {
-    setGameLineColumns(innerLineColumns + 2);
+    dispatch(setGameLineColumns(innerLineColumns + 2));
     setGameLineRows(innerLineRows + 2);
     setBombsNumber(bombsNumber);
     dispatch(setIsGameLost(false));
@@ -221,7 +221,6 @@ function App() {
       <GlobalStyle />
       <Display
         bombsLeft={bombsLeft}
-        gameLineColumns={gameLineColumns}
         timeData={timeData}
         time={time}
         setTime={setTime}
@@ -230,7 +229,6 @@ function App() {
         setBestResults={setBestResults}
       ></Display>
       <Game
-        gameLineColumns={gameLineColumns}
         gameLineRows={gameLineRows}
         isGameWon={isGameWon}
         checkField={checkField}
@@ -238,7 +236,6 @@ function App() {
       />
       <Form
         getGameProperties={getGameProperties}
-        gameLineColumns={gameLineColumns}
         gameLineRows={gameLineRows}
         generateFields={generateFields} />
       <Footer />
