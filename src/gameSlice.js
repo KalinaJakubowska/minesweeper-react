@@ -18,7 +18,7 @@ const gameSlice = createSlice({
             state.gameFields = payload;
         },
         setGameLineColumns: (state, { payload }) => {
-            state.gameLineColumn = payload;
+            state.gameLineColumns = payload;
         },
         setGameLineRows: (state, { payload }) => {
             state.gameLineRows = payload;
