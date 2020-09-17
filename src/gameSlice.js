@@ -74,4 +74,5 @@ export const {
 export const selectGameData = state => state.gameData;
 export const selectGameFields = state => state.gameData.gameFields;
 export const selectIsGameLost = state => state.gameData.isGameLost;
+export const selectIsGameWon = state => state.gameData.isGameWon;
 export default gameSlice.reducer;

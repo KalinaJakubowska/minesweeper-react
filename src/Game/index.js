@@ -1,17 +1,17 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GameButton, GameBoard, GameField } from "./styled";
-import { selectGameFields, selectIsGameLost, setGameFields } from "../gameSlice"
+import { selectGameFields, selectIsGameLost, selectIsGameWon, setGameFields } from "../gameSlice"
 
 const Game = ({
     gameLineColumns,
     gameLineRows,
-    isGameWon,
     checkField,
     onDoubleClick,
 }) => {
     const gameFields = useSelector(selectGameFields);
     const isGameLost = useSelector(selectIsGameLost);
+    const isGameWon = useSelector(selectIsGameWon);
     const dispatch = useDispatch();
 
     const onRightClick = (event, id) => {

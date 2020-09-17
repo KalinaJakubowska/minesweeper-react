@@ -12,20 +12,22 @@ import {
   selectGameData,
   selectGameFields,
   selectIsGameLost,
+  selectIsGameWon,
   setGameFields,
   setIsGameLost,
+  setIsGameWon,
   createNewField,
   revealField,
 } from './gameSlice';
 
 function App() {
   const gameFields = useSelector(selectGameFields);
-  const { isGameLost} = useSelector(selectIsGameLost);
+  const isGameLost = useSelector(selectIsGameLost);
+  const isGameWon = useSelector(selectIsGameWon);
 
   const [gameLineColumns, setGameLineColumns] = useStateItem("gameLineColumns", 10);
   const [gameLineRows, setGameLineRows] = useStateItem("gameLineRows", 10);
   const [bombsNumber, setBombsNumber] = useStateItem("bombsNumber", 10);
-  const [isGameWon, setIsGameWon] = useState(false);
   const [gameSize, setGameSize] = useState(gameLineColumns * gameLineRows);
   const [isItBeforeFirstLeftClick, setIsItBeforeFirstLeftClick] = useState(true);
   const [bombsLeft, setBombsLeft] = useState(10);
@@ -43,7 +45,7 @@ function App() {
     }
 
     if (gameFields.filter(({ hidden }) => hidden).length === bombsNumber && !isGameLost) {
-      setIsGameWon(true);
+      dispatch(setIsGameWon(true));
       setBombsLeft(0);
       revealAllBombs();
       setTimeData({ ...timeData, endDate: new Date() })
@@ -63,7 +65,7 @@ function App() {
     setGameLineRows(innerLineRows + 2);
     setBombsNumber(bombsNumber);
     dispatch(setIsGameLost(false));
-    setIsGameWon(false);
+    dispatch(setIsGameWon(false));
     setIsItBeforeFirstLeftClick(true);
     setGameSize((innerLineColumns + 2) * (innerLineRows + 2));
     setTime(0);
