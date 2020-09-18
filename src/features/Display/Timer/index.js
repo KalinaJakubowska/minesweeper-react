@@ -1,17 +1,11 @@
-import React, {useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import { Wrapper } from "./styled.js";
 
-const Timer = ({
-    isGameLost,
-    isGameWon,
-    timeData,
-    time,
-    setTime,
-    intervalRef }) => {
+const Timer = () => {
 
-    useEffect(() => {
-        clearInterval(intervalRef.current);
-    }, [isGameLost, isGameWon])
+    const [timeData, setTimeData] = useState();
+    const [time, setTime] = useState(0);
+    const intervalRef = useRef(null);
 
     useEffect(() => {
         if (timeData) {

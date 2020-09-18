@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import {
     Wrapper,
     Button,
@@ -10,22 +11,25 @@ import {
     ButtonWrapper,
 } from "./styled";
 import { useStateItem } from "./../../useStateItem.js";
-import { setGameProperties } from "./../gameSlice";
-import { useDispatch } from "react-redux";
+import { setGameFields, setGameProperties } from "./../gameSlice";
+import { generateFields } from "./../generateFields";
 
-const Form = ({ startNewGame }) => {
+const Form = () => {
     const [innerLineColumns, setInnerLineColumns] = useStateItem("innerLineColumns", 8);
     const [innerLineRows, setInnerLineRows] = useStateItem("innerLineRows", 8);
     const [bombsNumber, setBombsNumber] = useStateItem("bombsNumberForm", 10);
     const [isDisabled, setIsDisabled] = useStateItem("isDisabled", true);
+    const gameLineColumns = innerLineColumns + 2;
+    const gameLineRows = innerLineRows + 2;
 
     const dispatch = useDispatch();
 
+    const startNewGame = () => {
+        dispatch(setGameFields(generateFields(gameLineColumns, gameLineRows)));
+    };
+
     const onFormSubmit = event => {
         event.preventDefault();
-        const gameLineColumns = innerLineColumns + 2;
-        const gameLineRows = innerLineRows + 2;
-
         dispatch(setGameProperties({ bombsNumber, gameLineColumns, gameLineRows }));
         startNewGame();
     };
