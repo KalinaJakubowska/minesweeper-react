@@ -16,12 +16,9 @@ import {
   setIsGameLost,
   selectIsGameStarted,
   setIsGameWon,
-  setGameLineColumns,
-  setGameLineRows,
-  setBombsNumber,
-  createNewField,
   revealField,
 } from './features/gameSlice';
+import { generateFields } from './features/generateFields';
 
 function App() {
   const gameFields = useSelector(selectGameFields);
@@ -38,8 +35,12 @@ function App() {
 
   const dispatch = useDispatch();
 
+  const startNewGame = () => {
+    dispatch(setGameFields(generateFields(gameLineColumns, gameLineRows)));
+  };
+
   useEffect(() => {
-    generateFields();
+    dispatch(setGameFields(generateFields(gameLineColumns, gameLineRows)));
   }, [bombsNumber, gameLineColumns, gameLineRows])
 
   useEffect(() => {
@@ -57,16 +58,6 @@ function App() {
       setTimeData({ ...timeData, endDate: new Date() })
     }
   }, [gameFields]);
-
-  const getGameProperties = (bombsNumber, innerLineColumns, innerLineRows) => {
-    dispatch(setGameLineColumns(innerLineColumns + 2));
-    dispatch(setGameLineRows(innerLineRows + 2));
-    dispatch(setBombsNumber(bombsNumber));
-    dispatch(setIsGameLost(false));
-    dispatch(setIsGameWon(false));
-    setTime(0);
-    clearInterval(intervalRef.current);
-  };
 
   const idsAroundSelectedField = (index) => {
     const idsAroundFieldTemplate = [
@@ -198,19 +189,6 @@ function App() {
     countBombsAroundAllFields(newGameFields, id);
   };
 
-  const generateFields = () => {
-    dispatch(setGameFields([]));
-    for (let i = 0; i < gameLineRows; i++) {
-      for (let y = 0; y < gameLineColumns; y++) {
-        if (y === 0 || y === (gameLineColumns - 1) || i === 0 || i === (gameLineRows - 1)) {
-          dispatch(createNewField(["border", false]));
-        } else {
-          dispatch(createNewField(["field", true]));
-        }
-      }
-    }
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
@@ -225,8 +203,7 @@ function App() {
         onDoubleClick={onDoubleClick}
       />
       <Form
-        getGameProperties={getGameProperties}
-        generateFields={generateFields} />
+        startNewGame={startNewGame} />
       <Footer />
     </ThemeProvider>
   );
