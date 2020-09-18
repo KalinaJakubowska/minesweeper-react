@@ -11,6 +11,7 @@ import {
     selectIsGameStarted,
     setIsGameWon,
     revealField,
+    revealAllBombs
 } from './../gameSlice';
 import { generateFields } from "../generateFields";
 
@@ -31,14 +32,14 @@ const Game = () => {
     useEffect(() => {
         if (gameFields.filter(({ hidden }) => hidden).length === bombsNumber && !isGameLost) {
             dispatch(setIsGameWon(true));
-            revealAllBombs();
+            dispatch(revealAllBombs());
         }
 
         if (gameFields.filter(({ type }) => type === "bomb").find(({ hidden }) => hidden === false)
             && !isGameWon
             && !isGameLost) {
             dispatch(setIsGameLost(true));
-            revealAllBombs();
+            dispatch(revealAllBombs());
         }
     }, [gameFields]);
 
@@ -87,14 +88,6 @@ const Game = () => {
         };
         revealFieldAndFieldsAround(id);
         dispatch(setGameFields(newGameFields));
-    };
-
-    const revealAllBombs = () => {
-        for (let i = 0; i < gameSize; i++) {
-            if (gameFields[i].type === "bomb") {
-                dispatch(revealField(i));
-            }
-        }
     };
 
     const checkField = (id) => {

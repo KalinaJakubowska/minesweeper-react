@@ -30,6 +30,10 @@ const gameSlice = createSlice({
             state.isGameLost = false;
             state.isGameWon = false;
         },
+        revealAllBombs: ({ gameFields }) => {
+            gameFields.filter(field => field.type === "bomb")
+                .forEach(field => field.hidden = false)
+        },
     },
 });
 
@@ -42,6 +46,7 @@ export const {
     setGameFields,
     revealField,
     setGameProperties,
+    revealAllBombs,
 } = gameSlice.actions;
 export const selectGameData = state => state.gameData;
 export const selectGameFields = state => state.gameData.gameFields;
