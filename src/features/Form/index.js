@@ -9,7 +9,7 @@ import {
     ErrorInfoText,
     ButtonWrapper,
 } from "./styled";
-import { useStateItem } from "./../useStateItem.js";
+import { useStateItem } from "./../../useStateItem.js";
 
 const Form = ({ getGameProperties, generateFields }) => {
     const [innerLineColumns, setInnerLineColumns] = useStateItem("innerLineColumns", 8);

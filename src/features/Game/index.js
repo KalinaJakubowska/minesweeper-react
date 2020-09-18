@@ -1,7 +1,13 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GameButton, GameBoard, GameField } from "./styled";
-import { selectGameData, selectGameFields, selectIsGameLost, selectIsGameWon, setGameFields } from "../gameSlice"
+import {
+    selectGameData,
+    selectGameFields,
+    selectIsGameLost,
+    selectIsGameWon,
+    setGameFields
+} from "./../gameSlice"
 
 const Game = ({
     checkField,

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Form from "./Form";
-import Game from "./Game";
-import Footer from "./Footer";
-import Display from "./Display";
+import Form from "./features/Form";
+import Game from "./features/Game";
+import Footer from "./common/Footer";
+import Display from "./features/Display";
 import { GlobalStyle } from "./GlobalStyle.js";
 import { ThemeProvider } from "styled-components";
-import { theme } from "./theme.js";
+import { theme } from "./common/Footer/theme.js";
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectGameData,
@@ -21,23 +21,22 @@ import {
   setBombsNumber,
   createNewField,
   revealField,
-} from './gameSlice';
+} from './features/gameSlice';
 
 function App() {
   const gameFields = useSelector(selectGameFields);
   const isGameLost = useSelector(selectIsGameLost);
   const isGameWon = useSelector(selectIsGameWon);
+  const isGameStarted = useSelector(selectIsGameStarted);
   const { gameLineColumns, gameLineRows, bombsNumber } = useSelector(selectGameData);
 
-  const isGameStarted = useSelector(selectIsGameStarted);
   const [timeData, setTimeData] = useState();
   const [time, setTime] = useState(0);
-  const [bestResults, setBestResults] = useState([]);
   const intervalRef = useRef(null);
 
-  const dispatch = useDispatch();
-
   const gameSize = gameLineColumns * gameLineRows;
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     generateFields();
@@ -220,8 +219,6 @@ function App() {
         time={time}
         setTime={setTime}
         intervalRef={intervalRef}
-        bestResults={bestResults}
-        setBestResults={setBestResults}
       ></Display>
       <Game
         checkField={checkField}
