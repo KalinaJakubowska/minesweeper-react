@@ -46,10 +46,10 @@ const Form = () => {
     };
 
     return (
-        <Wrapper onSubmit={onFormSubmit} className="form">
-            <Button className="form__button">Rozpocznij nową grę</Button>
-            <Fieldset className="form__fieldset">
-                <Legend className="form__legend">
+        <Wrapper onSubmit={onFormSubmit}>
+            <Button>Rozpocznij nową grę</Button>
+            <Fieldset>
+                <Legend>
                     Zaawansowane opcje
                 </Legend>
                 <ButtonWrapper>
@@ -59,7 +59,7 @@ const Form = () => {
                     <Button onClick={() => onButtonClick(8, 8, 10, 4)}>Custom</Button>
                 </ButtonWrapper>
 
-                <Label className="form__label">Liczba kolumn
+                <Label>Liczba kolumn
                     <Input
                         disabled={isDisabled}
                         required
@@ -70,10 +70,9 @@ const Form = () => {
                         value={innerLineColumns}
                         onChange={({ target }) => setInnerLineColumns(+target.value)}
                         name="columnsNumber"
-                        className="form__input"
                     />
                 </Label>
-                <Label className="form__label">Liczba wierszy
+                <Label>Liczba wierszy
                     <Input
                         disabled={isDisabled}
                         required
@@ -84,10 +83,9 @@ const Form = () => {
                         value={innerLineRows}
                         onChange={({ target }) => setInnerLineRows(+target.value)}
                         name="rowsNumber"
-                        className="form__input"
                     />
                 </Label>
-                <Label className="form__label">Liczba bomb
+                <Label>Liczba bomb
                     <Input
                         disabled={isDisabled}
                         required
@@ -98,10 +96,9 @@ const Form = () => {
                         value={bombsNumber}
                         onChange={({ target }) => setBombsNumber(+target.value)}
                         name="bombsNumber"
-                        className="form__input"
                     />
                 </Label>
-                <ErrorInfoText className="form__span"></ErrorInfoText>
+                <ErrorInfoText />
             </Fieldset>
         </Wrapper>
     );
