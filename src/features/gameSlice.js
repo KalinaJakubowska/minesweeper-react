@@ -4,9 +4,9 @@ const gameSlice = createSlice({
     name: "gameData",
     initialState: {
         gameFields: [],
-        gameLineColumns: 10,
-        gameLineRows: 10,
-        bombsNumber: 10,
+        gameLineColumns: JSON.parse(+localStorage.getItem("innerLineColumns")+2) || 10,
+        gameLineRows: JSON.parse(+localStorage.getItem("innerLineRows")+2) || 10,
+        bombsNumber: JSON.parse(localStorage.getItem("bombsNumberForm")) || 10,
         isGameLost: false,
         isGameWon: false,
     },
