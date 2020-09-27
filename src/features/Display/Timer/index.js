@@ -1,29 +1,37 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
+import { selectIsGameLost, selectIsGameStarted, selectIsGameWon } from "../../gameSlice.js";
 import { Wrapper } from "./styled.js";
 
 const Timer = () => {
-
-    const [timeData, setTimeData] = useState();
-    const [time, setTime] = useState(0);
+    const isGameWon = useSelector(selectIsGameWon);
+    const isGameLost = useSelector(selectIsGameLost);
+    const isGameStarted = useSelector(selectIsGameStarted);
+    const [timeData, setTimeData] = useState({ startDate: 0, endDate: 0 });
     const intervalRef = useRef(null);
 
+
     useEffect(() => {
-        if (timeData) {
-            if (timeData.endDate) {
-                clearInterval(intervalRef.current);
-                setTime(timeData.endDate - timeData.startDate)
-            } else {
-                intervalRef.current = setInterval(() => {
-                    setTime(new Date() - timeData.startDate)
-                }, 10)
-            }
+        if (isGameWon || isGameLost) {
+            clearInterval(intervalRef.current);
+        }
+    }, [isGameWon, isGameLost]);
+
+    useEffect(() => {
+        if (!isGameStarted) {
+            const start = new Date();
+            intervalRef.current = setInterval(() => {
+                setTimeData({ startDate: start, endDate: new Date() })
+            }, 10)
+        } else {
+            setTimeData({ startDate: 0, endDate: 0 });
         }
 
         return () => clearInterval(intervalRef.current);
-    }, [timeData])
+    }, [isGameStarted]);
 
     return (
-        <Wrapper>{(time / 1000).toFixed(2)}</Wrapper>
+        <Wrapper>{((timeData.endDate - timeData.startDate) / 1000).toFixed(2)}</Wrapper>
     );
 }
 export default Timer;
