@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { useDispatch } from "react-redux";
 import {
     Wrapper,
     Button,
@@ -7,25 +8,31 @@ import {
     Label,
     Input,
     ErrorInfoText,
-    ButtonWrapper
+    ButtonWrapper,
 } from "./styled";
-import { useStateItem } from "./../useStateItem.js";
+import { useStateItem } from "./../../useStateItem.js";
+import { setGameFields, setGameProperties } from "./../gameSlice";
+import { generateFields } from "./../generateFields";
 
-const Form = ({ getGameProperties, gameLineColumns, gameLineRows, generateFields }) => {
+const Form = () => {
     const [innerLineColumns, setInnerLineColumns] = useStateItem("innerLineColumns", 8);
     const [innerLineRows, setInnerLineRows] = useStateItem("innerLineRows", 8);
     const [bombsNumber, setBombsNumber] = useStateItem("bombsNumberForm", 10);
     const [isDisabled, setIsDisabled] = useStateItem("isDisabled", true);
+    const gameLineColumns = innerLineColumns + 2;
+    const gameLineRows = innerLineRows + 2;
 
-    useEffect(() => {
-        generateFields();
-    }, [bombsNumber, gameLineColumns, gameLineRows])
+    const dispatch = useDispatch();
 
-    const onFormSubmit = (event) => {
+    const startNewGame = () => {
+        dispatch(setGameFields(generateFields(gameLineColumns, gameLineRows)));
+    };
+
+    const onFormSubmit = event => {
         event.preventDefault();
-        getGameProperties(bombsNumber, innerLineColumns, innerLineRows);
-        generateFields();
-    }
+        dispatch(setGameProperties({ bombsNumber, gameLineColumns, gameLineRows }));
+        startNewGame();
+    };
 
     const onButtonClick = (columns, rows, bombs, level) => {
         if (level === 4) {
@@ -36,23 +43,23 @@ const Form = ({ getGameProperties, gameLineColumns, gameLineRows, generateFields
         setInnerLineColumns(columns);
         setInnerLineRows(rows);
         setBombsNumber(bombs);
-    }
+    };
 
     return (
-        <Wrapper onSubmit={onFormSubmit} className="form">
-            <Button className="form__button">Rozpocznij nową grę</Button>
-            <Fieldset className="form__fieldset">
-                <Legend className="form__legend">
+        <Wrapper onSubmit={onFormSubmit}>
+            <Button>Rozpocznij nową grę</Button>
+            <Fieldset>
+                <Legend>
                     Zaawansowane opcje
                 </Legend>
                 <ButtonWrapper>
                     <Button onClick={() => onButtonClick(8, 8, 10, 1)}>Easy</Button>
                     <Button onClick={() => onButtonClick(16, 16, 40, 2)}>Medium</Button>
                     <Button onClick={() => onButtonClick(30, 16, 99, 3)}>Expert</Button>
-                    <Button onClick={() => onButtonClick(8, 8, 10, 4)}>Custom</Button>
+                    <Button disabled onClick={() => onButtonClick(8, 8, 10, 4)}>Custom</Button>
                 </ButtonWrapper>
 
-                <Label className="form__label">Liczba kolumn
+                <Label>Liczba kolumn
                     <Input
                         disabled={isDisabled}
                         required
@@ -63,10 +70,9 @@ const Form = ({ getGameProperties, gameLineColumns, gameLineRows, generateFields
                         value={innerLineColumns}
                         onChange={({ target }) => setInnerLineColumns(+target.value)}
                         name="columnsNumber"
-                        className="form__input"
                     />
                 </Label>
-                <Label className="form__label">Liczba wierszy
+                <Label>Liczba wierszy
                     <Input
                         disabled={isDisabled}
                         required
@@ -77,10 +83,9 @@ const Form = ({ getGameProperties, gameLineColumns, gameLineRows, generateFields
                         value={innerLineRows}
                         onChange={({ target }) => setInnerLineRows(+target.value)}
                         name="rowsNumber"
-                        className="form__input"
                     />
                 </Label>
-                <Label className="form__label">Liczba bomb
+                <Label>Liczba bomb
                     <Input
                         disabled={isDisabled}
                         required
@@ -91,12 +96,11 @@ const Form = ({ getGameProperties, gameLineColumns, gameLineRows, generateFields
                         value={bombsNumber}
                         onChange={({ target }) => setBombsNumber(+target.value)}
                         name="bombsNumber"
-                        className="form__input"
                     />
                 </Label>
-                <ErrorInfoText className="form__span"></ErrorInfoText>
+                <ErrorInfoText />
             </Fieldset>
         </Wrapper>
-    )
-}
+    );
+};
 export default Form;
