@@ -5,7 +5,7 @@ import Footer from "./common/Footer";
 import Display from "./features/Display";
 import { GlobalStyle } from "./GlobalStyle.js";
 import { ThemeProvider } from "styled-components";
-import { theme } from "./common/Footer/theme.js";
+import { theme } from "./common/theme.js";
 
 function App() {
 
