@@ -15,5 +15,6 @@ body {
   position: relative;
   font-size: 16px;
   padding: 50px 0 70px;
+  background-color: ${({theme}) => theme.color.second}
 }
 `
