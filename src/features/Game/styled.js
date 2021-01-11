@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import bomb from "./ico.ico";
+import bomb from "./../../assets/icons/bomb.ico";
 
 export const GameBoard = styled.div`
     width: fit-content;
