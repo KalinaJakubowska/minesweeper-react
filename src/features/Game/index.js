@@ -11,9 +11,9 @@ import {
     selectIsGameStarted,
     setIsGameWon,
     revealField,
-    revealAllBombs
+    revealAllBombs,
+    generateFields,
 } from './../gameSlice';
-import { generateFields } from "../generateFields";
 
 const Game = () => {
     const isGameStarted = useSelector(selectIsGameStarted);
@@ -26,7 +26,7 @@ const Game = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(setGameFields(generateFields(gameLineColumns, gameLineRows)));
+        dispatch(generateFields());
     }, []);
 
     useEffect(() => {
