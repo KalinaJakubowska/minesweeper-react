@@ -1,5 +1,5 @@
 # Minesweeper
-[Let's play!](https://kalinajakubowska.github.io/minesweeper/)
+[Let's play!](https://kalinajakubowska.github.io/minesweeper-react/)
 
 ## Example usage
 
