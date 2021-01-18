@@ -13,7 +13,7 @@ const Display = () => {
         <Wrapper columns={gameLineColumns}>
             <Item>{bombsLeft}</Item>
             <Timer />
-            <Item>X</Item>
+            <Item />
         </Wrapper>
     );
 };
