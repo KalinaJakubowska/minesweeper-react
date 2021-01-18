@@ -10,7 +10,7 @@ export const Wrapper = styled.form`
 export const ButtonWrapper = styled.div`
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 10px;
 `
 export const Fieldset = styled.fieldset`

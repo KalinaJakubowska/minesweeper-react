@@ -34,10 +34,6 @@ const Form = () => {
     };
 
     const onButtonClick = (columns, rows, bombs, level) => {
-        if (level === 4) {
-            setIsDisabled(false);
-            return 0;
-        }
         setIsDisabled(true);
         setInnerLineColumns(columns);
         setInnerLineRows(rows);
@@ -55,7 +51,6 @@ const Form = () => {
                     <Button onClick={() => onButtonClick(8, 8, 10, 1)}>Easy</Button>
                     <Button onClick={() => onButtonClick(16, 16, 40, 2)}>Medium</Button>
                     <Button onClick={() => onButtonClick(30, 16, 99, 3)}>Expert</Button>
-                    <Button disabled onClick={() => onButtonClick(8, 8, 10, 4)}>Custom</Button>
                 </ButtonWrapper>
 
                 <Label>Liczba kolumn
