@@ -1,10 +1,10 @@
 export const theme = {
   color: {
-    first: "teal",
+    first: "#008080",
     second: "#ffffff",
     text: "#eeeeee",
     shadow: "#cccccc",
-    loseBomb: "red",
-    winBomb: "green",
+    loseBomb: "#FF0000",
+    winBomb: "#008000",
   },
 };
