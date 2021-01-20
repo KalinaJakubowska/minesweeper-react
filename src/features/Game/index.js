@@ -9,7 +9,7 @@ import {
     setGameFields,
     selectIsGameStarted,
     revealField,
-    generateFields,
+    generateEmptyFields,
 } from './../gameSlice';
 import idsAroundSelectedField from "./idsAroundSelectedField";
 
@@ -24,7 +24,7 @@ const Game = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(generateFields());
+        dispatch(generateEmptyFields());
     }, [dispatch]);
 
     const revealAllEmptyFieldsInGroup = (id, newGameFields = [...gameFields]) => {

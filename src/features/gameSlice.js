@@ -42,8 +42,7 @@ const gameSlice = createSlice({
         .filter((field) => field.type === "bomb")
         .forEach((field) => (field.hidden = false));
     },
-
-    generateFields: (state) => {
+    generateEmptyFields: (state) => {
       const createNewField = ({ type, hidden }) => {
         state.gameFields.push({
           id: state.gameFields.length,
@@ -84,7 +83,7 @@ export const {
   revealField,
   setGameProperties,
   revealAllBombs,
-  generateFields,
+  generateEmptyFields,
 } = gameSlice.actions;
 export const selectGameData = (state) => state.gameData;
 export const selectGameFields = (state) => state.gameData.gameFields;

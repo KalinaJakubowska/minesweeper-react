@@ -11,7 +11,7 @@ import {
     ButtonWrapper,
 } from "./styled";
 import { useStateItem } from "./../../useStateItem.js";
-import { generateFields, setGameProperties } from "./../gameSlice";
+import { generateEmptyFields, setGameProperties } from "./../gameSlice";
 
 const Form = () => {
     const [innerLineColumns, setInnerLineColumns] = useStateItem("innerLineColumns", 8);
@@ -24,7 +24,7 @@ const Form = () => {
     const dispatch = useDispatch();
 
     const startNewGame = () => {
-        dispatch(generateFields());
+        dispatch(generateEmptyFields());
     };
 
     const onFormSubmit = event => {
