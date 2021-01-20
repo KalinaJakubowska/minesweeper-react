@@ -7,11 +7,8 @@ import {
     selectIsGameLost,
     selectIsGameWon,
     setGameFields,
-    setIsGameLost,
     selectIsGameStarted,
-    setIsGameWon,
     revealField,
-    revealAllBombs,
     generateFields,
 } from './../gameSlice';
 
@@ -27,21 +24,10 @@ const Game = () => {
 
     useEffect(() => {
         dispatch(generateFields());
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
-        if (gameFields.filter(({ hidden }) => hidden).length === bombsNumber && !isGameLost) {
-            dispatch(setIsGameWon(true));
-            dispatch(revealAllBombs());
-        }
-
-        if (gameFields.filter(({ type }) => type === "bomb").find(({ hidden }) => hidden === false)
-            && !isGameWon
-            && !isGameLost) {
-            dispatch(setIsGameLost(true));
-            dispatch(revealAllBombs());
-        }
-    }, [gameFields]);
+    }, [gameFields, dispatch]);
 
 
     const idsAroundSelectedField = (index) => {
