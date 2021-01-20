@@ -79,13 +79,9 @@ const Game = () => {
     const checkField = (id) => {
         if (isGameStarted && !gameFields[id].rightClicked) {
             generateBombsPlaces(id);
-            return 0;
-        }
-        if (gameFields[id].rightClicked) {
-            return 0;
-        }
-
-        if (gameFields[id].bombsAround === 0
+        } else if (gameFields[id].rightClicked) {
+            return;
+        } else if (gameFields[id].bombsAround === 0
             && gameFields[id].type !== "bomb") {
             revealAllEmptyFieldsInGroup(id);
         } else {
