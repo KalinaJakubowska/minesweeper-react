@@ -11,6 +11,7 @@ import {
     revealField,
     generateFields,
 } from './../gameSlice';
+import idsAroundSelectedField from "./idsAroundSelectedField";
 
 const Game = () => {
     const isGameStarted = useSelector(selectIsGameStarted);
@@ -25,20 +26,6 @@ const Game = () => {
     useEffect(() => {
         dispatch(generateFields());
     }, [dispatch]);
-
-    const idsAroundSelectedField = (index) => {
-        const idsAroundFieldTemplate = [
-            (gameLineColumns * (-1) - 1),
-            (gameLineColumns * (-1)),
-            (gameLineColumns * (-1) + 1),
-            -1,
-            1,
-            (gameLineColumns - 1),
-            (gameLineColumns),
-            (gameLineColumns + 1)
-        ];
-        return idsAroundFieldTemplate.map(id => id + index);
-    };
 
     const revealAllEmptyFieldsInGroup = (id, newGameFields = [...gameFields]) => {
         const revealFieldAndFieldsAround = (fieldIndex) => {
