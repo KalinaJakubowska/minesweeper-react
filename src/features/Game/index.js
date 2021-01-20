@@ -26,10 +26,6 @@ const Game = () => {
         dispatch(generateFields());
     }, [dispatch]);
 
-    useEffect(() => {
-    }, [gameFields, dispatch]);
-
-
     const idsAroundSelectedField = (index) => {
         const idsAroundFieldTemplate = [
             (gameLineColumns * (-1) - 1),
