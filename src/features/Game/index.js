@@ -172,7 +172,7 @@ const Game = () => {
                     onContextMenu={(event) => event.preventDefault()}
                     key={id}
                     type={type}
-                    won={isGameWon && !isGameLost}
+                    won={isGameWon}
                 >
                     <GameButton
                         hidden={!hidden}
