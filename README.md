@@ -19,6 +19,7 @@ Have fun! :)
 Current project was created with use of:
 - React
 - React Redux
+- Redux Saga
 - Redux Toolkit
 - Styled Components
 - localStorage
