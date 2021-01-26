@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { GameButton, GameBoard, GameField } from "./styled";
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
     selectGameData,
     selectGameFields,
@@ -9,7 +9,7 @@ import {
     setGameFields,
     selectIsGameStarted,
     revealField,
-    generateEmptyFields,
+    revealAllEmptyFieldsInGroup,
 } from './../gameSlice';
 import idsAroundSelectedField from "./idsAroundSelectedField";
 
@@ -23,42 +23,6 @@ const Game = () => {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(generateEmptyFields());
-    }, [dispatch]);
-
-    const revealAllEmptyFieldsInGroup = (id, newGameFields = [...gameFields]) => {
-        const revealFieldAndFieldsAround = (fieldIndex) => {
-            if (newGameFields[fieldIndex].rightClicked === false) {
-                newGameFields = [
-                    ...newGameFields.slice(0, fieldIndex),
-                    { ...newGameFields[fieldIndex], hidden: false },
-                    ...newGameFields.slice(fieldIndex + 1),
-                ]
-            }
-
-            for (const id of idsAroundSelectedField(fieldIndex)) {
-                if (newGameFields[id].type === "field"
-                    && newGameFields[id].bombsAround === 0
-                    && newGameFields[id].hidden === true
-                    && newGameFields[id].rightClicked === false) {
-                    revealFieldAndFieldsAround(id);
-
-                } else if (newGameFields[id].hidden === true
-                    && newGameFields[id].rightClicked === false) {
-
-                    newGameFields = [
-                        ...newGameFields.slice(0, id),
-                        { ...newGameFields[id], hidden: false },
-                        ...newGameFields.slice(id + 1),
-                    ]
-                }
-            }
-        };
-        revealFieldAndFieldsAround(id);
-        dispatch(setGameFields(newGameFields));
-    };
-
     const checkField = (id) => {
         if (isGameStarted && !gameFields[id].rightClicked) {
             generateBombsPlaces(id);
@@ -66,20 +30,20 @@ const Game = () => {
             return;
         } else if (gameFields[id].bombsAround === 0
             && gameFields[id].type !== "bomb") {
-            revealAllEmptyFieldsInGroup(id);
+            dispatch(revealAllEmptyFieldsInGroup({id}));
         } else {
             dispatch(revealField(id));
         }
     };
 
     const countBombsAroundField = (i, newGameFields = [...gameFields]) => {
-        return idsAroundSelectedField(i)
+        return idsAroundSelectedField(i, gameLineColumns)
             .map(id => +(newGameFields[id].type === "bomb"))
             .reduce((acc, curr) => acc + curr);
     };
 
     const countRightClickedAroundField = (id) => {
-        return idsAroundSelectedField(id)
+        return idsAroundSelectedField(id, gameLineColumns)
             .map(id => +(gameFields[id].rightClicked))
             .reduce((acc, curr) => acc + curr);
     };
@@ -88,7 +52,7 @@ const Game = () => {
         if (gameFields[id].type === "field"
             && countRightClickedAroundField(id) === gameFields[id].bombsAround
             && !gameFields[id].rightClicked) {
-            revealAllEmptyFieldsInGroup(id);
+            dispatch(revealAllEmptyFieldsInGroup({id}));
         }
     };
 
@@ -106,11 +70,11 @@ const Game = () => {
                 ]
             }
         }
-        revealAllEmptyFieldsInGroup(firstID, newGameFields);
+        dispatch(revealAllEmptyFieldsInGroup({id: firstID, newGameFields}));
     };
 
     const generateBombsPlaces = (id) => {
-        const emptyFields = idsAroundSelectedField(id);
+        const emptyFields = idsAroundSelectedField(id, gameLineColumns);
         let newGameFields = [...gameFields];
         let newBomb;
         for (let i = 1; i <= bombsNumber; i++) {

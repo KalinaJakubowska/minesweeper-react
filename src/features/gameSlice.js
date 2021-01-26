@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import idsAroundSelectedField from "./Game/idsAroundSelectedField";
 
 const gameSlice = createSlice({
   name: "gameData",
@@ -70,6 +71,45 @@ const gameSlice = createSlice({
         }
       }
     },
+    revealAllEmptyFieldsInGroup: (
+      state,
+      { payload: { id, newGameFields = [...state.gameFields] } }
+    ) => {
+      const revealFieldAndFieldsAround = (fieldIndex) => {
+        if (newGameFields[fieldIndex].rightClicked === false) {
+          newGameFields = [
+            ...newGameFields.slice(0, fieldIndex),
+            { ...newGameFields[fieldIndex], hidden: false },
+            ...newGameFields.slice(fieldIndex + 1),
+          ];
+        }
+
+        for (const id of idsAroundSelectedField(
+          fieldIndex,
+          state.gameLineColumns
+        )) {
+          if (
+            newGameFields[id].type === "field" &&
+            newGameFields[id].bombsAround === 0 &&
+            newGameFields[id].hidden === true &&
+            newGameFields[id].rightClicked === false
+          ) {
+            revealFieldAndFieldsAround(id);
+          } else if (
+            newGameFields[id].hidden === true &&
+            newGameFields[id].rightClicked === false
+          ) {
+            newGameFields = [
+              ...newGameFields.slice(0, id),
+              { ...newGameFields[id], hidden: false },
+              ...newGameFields.slice(id + 1),
+            ];
+          }
+        }
+      };
+      revealFieldAndFieldsAround(id);
+      state.gameFields = newGameFields;
+    },
   },
 });
 
@@ -84,6 +124,7 @@ export const {
   setGameProperties,
   revealAllBombs,
   generateEmptyFields,
+  revealAllEmptyFieldsInGroup,
 } = gameSlice.actions;
 export const selectGameData = (state) => state.gameData;
 export const selectGameFields = (state) => state.gameData.gameFields;
