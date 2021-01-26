@@ -45,9 +45,9 @@ const Form = () => {
 
   return (
     <Wrapper onSubmit={onFormSubmit}>
-      <Button>Rozpocznij nową grę</Button>
+      <Button>Start new game</Button>
       <Fieldset>
-        <Legend>Zaawansowane opcje</Legend>
+        <Legend>Options</Legend>
         <ButtonWrapper>
           <Button onClick={() => onButtonClick(8, 8, 10, 1)}>Easy</Button>
           <Button onClick={() => onButtonClick(16, 16, 40, 2)}>Medium</Button>
@@ -55,7 +55,7 @@ const Form = () => {
         </ButtonWrapper>
 
         <Label>
-          Liczba kolumn
+          Columns
           <Input
             disabled={isDisabled}
             required
@@ -69,7 +69,7 @@ const Form = () => {
           />
         </Label>
         <Label>
-          Liczba wierszy
+          Rows
           <Input
             disabled={isDisabled}
             required
@@ -83,7 +83,7 @@ const Form = () => {
           />
         </Label>
         <Label>
-          Liczba bomb
+          Bombs
           <Input
             disabled={isDisabled}
             required
