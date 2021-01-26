@@ -5,6 +5,7 @@ import {
   selectGameData,
   setIsGameLost,
   setIsGameWon,
+  revealAllEmptyFieldsInGroup,
 } from "./gameSlice";
 
 function* revealFieldHandler() {
@@ -25,4 +26,5 @@ function* revealFieldHandler() {
 
 export function* watchRevealField() {
   yield takeLatest(revealField.type, revealFieldHandler);
+  yield takeLatest(revealAllEmptyFieldsInGroup.type, revealFieldHandler);
 }
