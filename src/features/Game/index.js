@@ -11,7 +11,7 @@ import {
     revealField,
     revealAllEmptyFieldsInGroup,
 } from './../gameSlice';
-import idsAroundSelectedField from "./idsAroundSelectedField";
+import idsAroundSelectedField from "../idsAroundSelectedField";
 
 const Game = () => {
     const isGameStarted = useSelector(selectIsGameStarted);

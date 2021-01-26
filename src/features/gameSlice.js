@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import idsAroundSelectedField from "./Game/idsAroundSelectedField";
+import idsAroundSelectedField from "./idsAroundSelectedField";
 
 const gameSlice = createSlice({
   name: "gameData",
