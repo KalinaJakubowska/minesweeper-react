@@ -1,7 +1,4 @@
-import store from "./../../store";
-
-export default (index) => {
-  const { gameLineColumns } = store.getState().gameData;
+export default (index, gameLineColumns) => {
   const idsAroundFieldTemplate = [
     gameLineColumns * -1 - 1,
     gameLineColumns * -1,
