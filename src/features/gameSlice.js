@@ -14,6 +14,7 @@ const gameSlice = createSlice({
     bombsNumber: JSON.parse(localStorage.getItem("bombsNumberForm")) || 10,
     isGameLost: false,
     isGameWon: false,
+    firstID: false,
   },
   reducers: {
     setGameFields: (state, { payload }) => {
@@ -37,11 +38,16 @@ const gameSlice = createSlice({
       state.bombsNumber = bombsNumber;
       state.isGameLost = false;
       state.isGameWon = false;
+      state.firstID = false;
     },
     revealAllBombs: ({ gameFields }) => {
       gameFields
         .filter((field) => field.type === "bomb")
         .forEach((field) => (field.hidden = false));
+    },
+    setFirstID: (state, { payload }) => {
+      state.firstID = payload;
+      console.log(state.firstID);
     },
     generateEmptyFields: (state) => {
       const createNewField = ({ type, hidden }) => {
@@ -115,9 +121,9 @@ const gameSlice = createSlice({
 
       const countBombsAroundAllFields = () => {
         const countBombsAroundField = (i) => {
-          return (idsAroundSelectedField(i, state.gameLineColumns)
+          return idsAroundSelectedField(i, state.gameLineColumns)
             .map((id) => +(state.gameFields[id].type === "bomb"))
-            .reduce((acc, curr) => acc + curr));
+            .reduce((acc, curr) => acc + curr);
         };
 
         for (let i = 0; i < gameSize; i++) {
@@ -159,6 +165,7 @@ export const {
   setGameFields,
   revealField,
   setGameProperties,
+  setFirstID,
   revealAllBombs,
   generateEmptyFields,
   revealAllEmptyFieldsInGroup,
@@ -174,11 +181,6 @@ export const selectBombsLeft = (state) => {
     : selectGameData(state).bombsNumber -
         selectGameFields(state).filter(({ rightClicked }) => rightClicked)
           .length;
-};
-export const selectIsGameStarted = (state) => {
-  return !selectGameFields(state).filter(
-    (field) => field.type !== "border" && field.hidden === false
-  ).length;
 };
 
 export default gameSlice.reducer;

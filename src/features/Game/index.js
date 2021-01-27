@@ -7,16 +7,14 @@ import {
   selectIsGameLost,
   selectIsGameWon,
   setGameFields,
-  selectIsGameStarted,
   revealField,
   revealAllEmptyFieldsInGroup,
-  generateFieldsContent,
+  setFirstID,
 } from "./../gameSlice";
 import idsAroundSelectedField from "../idsAroundSelectedField";
 
 const Game = () => {
-  const isGameStarted = useSelector(selectIsGameStarted);
-  const { gameLineColumns, gameLineRows } = useSelector(
+  const { gameLineColumns, gameLineRows, firstID } = useSelector(
     selectGameData
   );
   const gameFields = useSelector(selectGameFields);
@@ -24,8 +22,6 @@ const Game = () => {
   const isGameWon = useSelector(selectIsGameWon);
 
   const dispatch = useDispatch();
-
-  
 
   const onDoubleClick = (id) => {
     const countRightClickedAroundField = (id) => {
@@ -56,8 +52,8 @@ const Game = () => {
   };
 
   const checkField = (id) => {
-    if (isGameStarted && !gameFields[id].rightClicked) {
-      dispatch(generateFieldsContent(id));
+    if (!firstID && !gameFields[id].rightClicked) {
+      dispatch(setFirstID(id));
     } else if (gameFields[id].rightClicked) {
       return;
     } else if (
