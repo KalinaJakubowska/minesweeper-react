@@ -47,7 +47,6 @@ const gameSlice = createSlice({
     },
     setFirstID: (state, { payload }) => {
       state.firstID = payload;
-      console.log(state.firstID);
     },
     generateEmptyFields: (state) => {
       const createNewField = ({ type, hidden }) => {
@@ -131,7 +130,6 @@ const gameSlice = createSlice({
             state.gameFields[i].bombsAround = countBombsAroundField(i);
           }
         }
-        // dispatch(revealAllEmptyFieldsInGroup({ id: firstID, newGameFields }));
       };
 
       const emptyFields = idsAroundSelectedField(
@@ -172,6 +170,7 @@ export const {
   generateFieldsContent,
 } = gameSlice.actions;
 export const selectGameData = (state) => state.gameData;
+export const selectFirstID = (state) => state.gameData.firstID;
 export const selectGameFields = (state) => state.gameData.gameFields;
 export const selectIsGameLost = (state) => state.gameData.isGameLost;
 export const selectIsGameWon = (state) => state.gameData.isGameWon;
