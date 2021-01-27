@@ -25,7 +25,7 @@ const Game = () => {
 
   const dispatch = useDispatch();
 
-  const generateBombsPlaces = (id) => {
+  const generateFieldsContent = (id) => {
     const countBombsAroundAllFields = (newGameFields, firstID) => {
       const countBombsAroundField = (i, newGameFields = [...gameFields]) => {
         return idsAroundSelectedField(i, gameLineColumns)
@@ -100,7 +100,7 @@ const Game = () => {
 
   const checkField = (id) => {
     if (isGameStarted && !gameFields[id].rightClicked) {
-      generateBombsPlaces(id);
+      generateFieldsContent(id);
     } else if (gameFields[id].rightClicked) {
       return;
     } else if (
