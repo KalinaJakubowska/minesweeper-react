@@ -14,6 +14,7 @@ const gameSlice = createSlice({
     bombsNumber: JSON.parse(localStorage.getItem("bombsNumberForm")) || 10,
     isGameLost: false,
     isGameWon: false,
+    firstID: false,
   },
   reducers: {
     setGameFields: (state, { payload }) => {
@@ -37,11 +38,15 @@ const gameSlice = createSlice({
       state.bombsNumber = bombsNumber;
       state.isGameLost = false;
       state.isGameWon = false;
+      state.firstID = false;
     },
     revealAllBombs: ({ gameFields }) => {
       gameFields
         .filter((field) => field.type === "bomb")
         .forEach((field) => (field.hidden = false));
+    },
+    setFirstID: (state, { payload }) => {
+      state.firstID = payload;
     },
     generateEmptyFields: (state) => {
       const createNewField = ({ type, hidden }) => {
@@ -110,6 +115,42 @@ const gameSlice = createSlice({
       revealFieldAndFieldsAround(id);
       state.gameFields = newGameFields;
     },
+    generateFieldsContent: (state, { payload }) => {
+      const gameSize = state.gameLineColumns * state.gameLineRows;
+
+      const countBombsAroundAllFields = () => {
+        const countBombsAroundField = (i) => {
+          return idsAroundSelectedField(i, state.gameLineColumns)
+            .map((id) => +(state.gameFields[id].type === "bomb"))
+            .reduce((acc, curr) => acc + curr);
+        };
+
+        for (let i = 0; i < gameSize; i++) {
+          if (state.gameFields[i].type === "field") {
+            state.gameFields[i].bombsAround = countBombsAroundField(i);
+          }
+        }
+      };
+
+      const emptyFields = idsAroundSelectedField(
+        payload,
+        state.gameLineColumns
+      );
+
+      for (let i = 1; i <= state.bombsNumber; i++) {
+        let newBomb = Math.floor(Math.random() * gameSize);
+        while (
+          state.gameFields[newBomb].type !== "field" ||
+          newBomb === payload ||
+          emptyFields.includes(newBomb)
+        ) {
+          newBomb = Math.floor(Math.random() * gameSize);
+        }
+
+        state.gameFields[newBomb].type = "bomb";
+      }
+      countBombsAroundAllFields(payload);
+    },
   },
 });
 
@@ -122,11 +163,14 @@ export const {
   setGameFields,
   revealField,
   setGameProperties,
+  setFirstID,
   revealAllBombs,
   generateEmptyFields,
   revealAllEmptyFieldsInGroup,
+  generateFieldsContent,
 } = gameSlice.actions;
 export const selectGameData = (state) => state.gameData;
+export const selectFirstID = (state) => state.gameData.firstID;
 export const selectGameFields = (state) => state.gameData.gameFields;
 export const selectIsGameLost = (state) => state.gameData.isGameLost;
 export const selectIsGameWon = (state) => state.gameData.isGameWon;
@@ -136,11 +180,6 @@ export const selectBombsLeft = (state) => {
     : selectGameData(state).bombsNumber -
         selectGameFields(state).filter(({ rightClicked }) => rightClicked)
           .length;
-};
-export const selectIsGameStarted = (state) => {
-  return !selectGameFields(state).filter(
-    (field) => field.type !== "border" && field.hidden === false
-  ).length;
 };
 
 export default gameSlice.reducer;

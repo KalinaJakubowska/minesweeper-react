@@ -6,6 +6,9 @@ import {
   setIsGameLost,
   setIsGameWon,
   revealAllEmptyFieldsInGroup,
+  setFirstID,
+  generateFieldsContent,
+  selectFirstID,
 } from "./gameSlice";
 
 function* revealFieldHandler() {
@@ -27,4 +30,14 @@ function* revealFieldHandler() {
 export function* watchRevealField() {
   yield takeLatest(revealField.type, revealFieldHandler);
   yield takeLatest(revealAllEmptyFieldsInGroup.type, revealFieldHandler);
+}
+
+function* startGame() {
+  const firstID = yield select(selectFirstID);
+  yield put(generateFieldsContent(firstID));
+  yield put(revealAllEmptyFieldsInGroup({ id: firstID }));
+}
+
+export function* watchSetFirstID() {
+  yield takeLatest(setFirstID.type, startGame);
 }
