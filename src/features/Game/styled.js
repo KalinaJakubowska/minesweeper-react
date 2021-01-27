@@ -33,6 +33,7 @@ export const GameButton = styled.button`
     width: 40px;
     border-radius: 0;
     background-color: ${({ theme }) => theme.color.shadow};
+    opacity: 0.5;
     border: 2px outset ${({ theme }) => theme.color.second};
     ${({ hidden }) => hidden && css`
         display: none;

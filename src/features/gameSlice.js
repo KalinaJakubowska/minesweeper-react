@@ -110,6 +110,43 @@ const gameSlice = createSlice({
       revealFieldAndFieldsAround(id);
       state.gameFields = newGameFields;
     },
+    generateFieldsContent: (state, { payload }) => {
+      const gameSize = state.gameLineColumns * state.gameLineRows;
+
+      const countBombsAroundAllFields = () => {
+        const countBombsAroundField = (i) => {
+          return (idsAroundSelectedField(i, state.gameLineColumns)
+            .map((id) => +(state.gameFields[id].type === "bomb"))
+            .reduce((acc, curr) => acc + curr));
+        };
+
+        for (let i = 0; i < gameSize; i++) {
+          if (state.gameFields[i].type === "field") {
+            state.gameFields[i].bombsAround = countBombsAroundField(i);
+          }
+        }
+        // dispatch(revealAllEmptyFieldsInGroup({ id: firstID, newGameFields }));
+      };
+
+      const emptyFields = idsAroundSelectedField(
+        payload,
+        state.gameLineColumns
+      );
+
+      for (let i = 1; i <= state.bombsNumber; i++) {
+        let newBomb = Math.floor(Math.random() * gameSize);
+        while (
+          state.gameFields[newBomb].type !== "field" ||
+          newBomb === payload ||
+          emptyFields.includes(newBomb)
+        ) {
+          newBomb = Math.floor(Math.random() * gameSize);
+        }
+
+        state.gameFields[newBomb].type = "bomb";
+      }
+      countBombsAroundAllFields(payload);
+    },
   },
 });
 
@@ -125,6 +162,7 @@ export const {
   revealAllBombs,
   generateEmptyFields,
   revealAllEmptyFieldsInGroup,
+  generateFieldsContent,
 } = gameSlice.actions;
 export const selectGameData = (state) => state.gameData;
 export const selectGameFields = (state) => state.gameData.gameFields;

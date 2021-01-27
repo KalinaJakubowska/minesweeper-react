@@ -10,65 +10,22 @@ import {
   selectIsGameStarted,
   revealField,
   revealAllEmptyFieldsInGroup,
+  generateFieldsContent,
 } from "./../gameSlice";
 import idsAroundSelectedField from "../idsAroundSelectedField";
 
 const Game = () => {
   const isGameStarted = useSelector(selectIsGameStarted);
-  const { gameLineColumns, gameLineRows, bombsNumber } = useSelector(
+  const { gameLineColumns, gameLineRows } = useSelector(
     selectGameData
   );
-  const gameSize = gameLineColumns * gameLineRows;
   const gameFields = useSelector(selectGameFields);
   const isGameLost = useSelector(selectIsGameLost);
   const isGameWon = useSelector(selectIsGameWon);
 
   const dispatch = useDispatch();
 
-  const generateFieldsContent = (id) => {
-    const countBombsAroundAllFields = (newGameFields, firstID) => {
-      const countBombsAroundField = (i, newGameFields = [...gameFields]) => {
-        return idsAroundSelectedField(i, gameLineColumns)
-          .map((id) => +(newGameFields[id].type === "bomb"))
-          .reduce((acc, curr) => acc + curr);
-      };
-
-      for (let i = 0; i < gameSize; i++) {
-        if (newGameFields[i].type === "field") {
-          newGameFields = [
-            ...newGameFields.slice(0, i),
-            {
-              ...newGameFields[i],
-              bombsAround: countBombsAroundField(i, newGameFields),
-            },
-            ...newGameFields.slice(i + 1),
-          ];
-        }
-      }
-      dispatch(revealAllEmptyFieldsInGroup({ id: firstID, newGameFields }));
-    };
-
-    const emptyFields = idsAroundSelectedField(id, gameLineColumns);
-    let newGameFields = [...gameFields];
-    let newBomb;
-
-    for (let i = 1; i <= bombsNumber; i++) {
-      newBomb = Math.floor(Math.random() * gameSize);
-      while (
-        newGameFields[newBomb].type !== "field" ||
-        newBomb === id ||
-        emptyFields.includes(newBomb)
-      ) {
-        newBomb = Math.floor(Math.random() * gameSize);
-      }
-      newGameFields = [
-        ...newGameFields.slice(0, newBomb),
-        { ...newGameFields[newBomb], type: "bomb" },
-        ...newGameFields.slice(newBomb + 1),
-      ];
-    }
-    countBombsAroundAllFields(newGameFields, id);
-  };
+  
 
   const onDoubleClick = (id) => {
     const countRightClickedAroundField = (id) => {
@@ -100,7 +57,7 @@ const Game = () => {
 
   const checkField = (id) => {
     if (isGameStarted && !gameFields[id].rightClicked) {
-      generateFieldsContent(id);
+      dispatch(generateFieldsContent(id));
     } else if (gameFields[id].rightClicked) {
       return;
     } else if (
