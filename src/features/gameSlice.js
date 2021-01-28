@@ -77,43 +77,28 @@ const gameSlice = createSlice({
       }
     },
     revealAllEmptyFieldsInGroup: (
-      state,
-      { payload: { id, newGameFields = [...state.gameFields] } }
+      { gameFields, gameLineColumns },
+      { payload: { id } }
     ) => {
       const revealFieldAndFieldsAround = (fieldIndex) => {
-        if (newGameFields[fieldIndex].rightClicked === false) {
-          newGameFields = [
-            ...newGameFields.slice(0, fieldIndex),
-            { ...newGameFields[fieldIndex], hidden: false },
-            ...newGameFields.slice(fieldIndex + 1),
-          ];
+        if (gameFields[fieldIndex].rightClicked === false) {
+          gameFields[fieldIndex].hidden = false;
         }
 
-        for (const id of idsAroundSelectedField(
-          fieldIndex,
-          state.gameLineColumns
-        )) {
+        for (const id of idsAroundSelectedField(fieldIndex, gameLineColumns)) {
           if (
-            newGameFields[id].type === "field" &&
-            newGameFields[id].bombsAround === 0 &&
-            newGameFields[id].hidden === true &&
-            newGameFields[id].rightClicked === false
+            gameFields[id].type === "field" &&
+            !gameFields[id].bombsAround &&
+            gameFields[id].hidden &&
+            !gameFields[id].rightClicked
           ) {
             revealFieldAndFieldsAround(id);
-          } else if (
-            newGameFields[id].hidden === true &&
-            newGameFields[id].rightClicked === false
-          ) {
-            newGameFields = [
-              ...newGameFields.slice(0, id),
-              { ...newGameFields[id], hidden: false },
-              ...newGameFields.slice(id + 1),
-            ];
+          } else if (gameFields[id].hidden && !gameFields[id].rightClicked) {
+            gameFields[id].hidden = false;
           }
         }
       };
       revealFieldAndFieldsAround(id);
-      state.gameFields = newGameFields;
     },
     generateFieldsContent: (state, { payload }) => {
       const gameSize = state.gameLineColumns * state.gameLineRows;
