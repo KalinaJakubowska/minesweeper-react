@@ -12,6 +12,7 @@ import {
 } from "./styled";
 import { useStateItem } from "./../../useStateItem.js";
 import { generateEmptyFields, setGameProperties } from "./../gameSlice";
+import levelProperties from "./levelProperties";
 
 const Form = () => {
   const [innerLineColumns, setInnerLineColumns] = useStateItem(
@@ -20,24 +21,18 @@ const Form = () => {
   );
   const [innerLineRows, setInnerLineRows] = useStateItem("innerLineRows", 8);
   const [bombsNumber, setBombsNumber] = useStateItem("bombsNumberForm", 10);
-  const [isDisabled, setIsDisabled] = useStateItem("isDisabled", true);
   const gameLineColumns = innerLineColumns + 2;
   const gameLineRows = innerLineRows + 2;
 
   const dispatch = useDispatch();
 
-  const startNewGame = () => {
-    dispatch(generateEmptyFields());
-  };
-
   const onFormSubmit = (event) => {
     event.preventDefault();
     dispatch(setGameProperties({ bombsNumber, gameLineColumns, gameLineRows }));
-    startNewGame();
+    dispatch(generateEmptyFields());
   };
 
-  const onButtonClick = (columns, rows, bombs) => {
-    setIsDisabled(true);
+  const onButtonClick = ({ columns, rows, bombs }) => {
     setInnerLineColumns(columns);
     setInnerLineRows(rows);
     setBombsNumber(bombs);
@@ -49,50 +44,44 @@ const Form = () => {
       <Fieldset>
         <Legend>Options</Legend>
         <ButtonWrapper>
-          <Button onClick={() => onButtonClick(8, 8, 10, 1)}>Easy</Button>
-          <Button onClick={() => onButtonClick(16, 16, 40, 2)}>Medium</Button>
-          <Button onClick={() => onButtonClick(30, 16, 99, 3)}>Expert</Button>
+          <Button onClick={() => onButtonClick(levelProperties.easy)}>
+            Easy
+          </Button>
+          <Button onClick={() => onButtonClick(levelProperties.medium)}>
+            Medium
+          </Button>
+          <Button onClick={() => onButtonClick(levelProperties.expert)}>
+            Expert
+          </Button>
         </ButtonWrapper>
 
         <Label>
           Columns
           <Input
-            disabled={isDisabled}
+            disabled
             required
             type="number"
-            step="1"
-            min="5"
-            max="30"
             value={innerLineColumns}
-            onChange={({ target }) => setInnerLineColumns(+target.value)}
             name="columnsNumber"
           />
         </Label>
         <Label>
           Rows
           <Input
-            disabled={isDisabled}
+            disabled
             required
             type="number"
-            step="1"
-            min="5"
-            max="16"
             value={innerLineRows}
-            onChange={({ target }) => setInnerLineRows(+target.value)}
             name="rowsNumber"
           />
         </Label>
         <Label>
           Bombs
           <Input
-            disabled={isDisabled}
+            disabled
             required
             type="number"
-            step="1"
-            min="5"
-            max="300"
             value={bombsNumber}
-            onChange={({ target }) => setBombsNumber(+target.value)}
             name="bombsNumber"
           />
         </Label>
