@@ -5,6 +5,7 @@ import Footer from "./common/Footer";
 import Display from "./features/Display";
 import { GlobalStyle } from "./GlobalStyle.js";
 import { ThemeProvider } from "styled-components";
+import { Normalize } from "styled-normalize";
 import { theme } from "./common/theme/theme.js";
 import { useDispatch } from "react-redux";
 import { generateEmptyFields } from "./features/gameSlice";
@@ -18,6 +19,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <Normalize />
       <GlobalStyle />
       <Display />
       <Game />
