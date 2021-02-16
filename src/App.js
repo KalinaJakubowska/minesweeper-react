@@ -1,30 +1,16 @@
-import React, { useEffect } from "react";
-import Form from "./features/Form";
-import Game from "./features/Game";
-import Footer from "./common/Footer";
-import Display from "./features/Display";
+import React from "react";
+import Minesweeper from "./features/Minesweeper.js";
 import { GlobalStyle } from "./GlobalStyle.js";
 import { ThemeProvider } from "styled-components";
 import { Normalize } from "styled-normalize";
 import { theme } from "./common/theme/theme.js";
-import { useDispatch } from "react-redux";
-import { generateEmptyFields } from "./features/gameSlice";
 
 function App() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(generateEmptyFields());
-  }, [dispatch]);
-
   return (
     <ThemeProvider theme={theme}>
       <Normalize />
       <GlobalStyle />
-      <Display />
-      <Game />
-      <Form />
-      <Footer />
+      <Minesweeper />
     </ThemeProvider>
   );
 }
