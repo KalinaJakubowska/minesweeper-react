@@ -1,4 +1,4 @@
-import {createGlobalStyle} from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
 html {
@@ -15,6 +15,6 @@ body {
   position: relative;
   font-size: 16px;
   padding: 50px 0 70px;
-  background-color: ${({theme}) => theme.color.second}
+  background-color: ${({ theme }) => theme.color.second}
 }
-`
+`;
