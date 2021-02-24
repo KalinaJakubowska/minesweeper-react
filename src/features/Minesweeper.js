@@ -4,23 +4,24 @@ import Game from "./Game";
 import Footer from "./../common/Footer";
 import Display from "./Display";
 import { useDispatch } from "react-redux";
-import { generateEmptyFields } from "./gameSlice";
+import { prepareGame } from "./gameSlice";
 import ScoreBoard from "./ScoreBoard";
 import { Wrapper } from "./styled";
+import levelProperties from "./levelProperties";
 
 const Minesweeper = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(generateEmptyFields());
+    dispatch(prepareGame(levelProperties.easy));
   }, [dispatch]);
 
   return (
     <Wrapper>
       <div>
+        <Form />
         <Display />
         <Game />
-        <Form />
         <Footer />
       </div>
       <ScoreBoard />
