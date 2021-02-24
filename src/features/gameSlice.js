@@ -29,13 +29,13 @@ const gameSlice = createSlice({
     revealField: ({ gameFields }, { payload: id }) => {
       gameFields[id].hidden = false;
     },
-    setGameProperties: (
+    prepareGame: (
       state,
-      { payload: { bombsNumber, gameLineColumns, gameLineRows } }
+      { payload: level }
     ) => {
-      state.gameLineColumns = gameLineColumns;
-      state.gameLineRows = gameLineRows;
-      state.bombsNumber = bombsNumber;
+      state.gameLineColumns = level.columns;
+      state.gameLineRows = level.rows;
+      state.bombsNumber = level.bombs;
       state.isGameLost = false;
       state.isGameWon = false;
       state.firstID = false;
@@ -47,34 +47,6 @@ const gameSlice = createSlice({
     },
     setFirstID: (state, { payload }) => {
       state.firstID = payload;
-    },
-    generateEmptyFields: (state) => {
-      const createNewField = ({ type, hidden }) => {
-        state.gameFields.push({
-          id: state.gameFields.length,
-          type,
-          hidden,
-          bombsAround: 0,
-          rightClicked: false,
-        });
-      };
-
-      state.gameFields = [];
-
-      for (let i = 0; i < state.gameLineRows; i++) {
-        for (let y = 0; y < state.gameLineColumns; y++) {
-          if (
-            y === 0 ||
-            y === state.gameLineColumns - 1 ||
-            i === 0 ||
-            i === state.gameLineRows - 1
-          ) {
-            createNewField({ type: "border", hidden: false });
-          } else {
-            createNewField({ type: "field", hidden: true });
-          }
-        }
-      }
     },
     revealAllEmptyFieldsInGroup: (
       { gameFields, gameLineColumns },
@@ -147,10 +119,9 @@ export const {
   setGameLineRows,
   setGameFields,
   revealField,
-  setGameProperties,
+  prepareGame,
   setFirstID,
   revealAllBombs,
-  generateEmptyFields,
   revealAllEmptyFieldsInGroup,
   generateFieldsContent,
 } = gameSlice.actions;
