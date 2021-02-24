@@ -14,7 +14,7 @@ body {
   min-height: 100vh;
   position: relative;
   font-size: 16px;
-  padding: 50px 0 70px;
+  padding: 20px 20px 70px;
   background-color: ${({ theme }) => theme.color.second}
 }
 `;
