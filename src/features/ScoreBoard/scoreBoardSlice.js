@@ -7,7 +7,7 @@ const scoreBoardSlice = createSlice({
   },
   reducers: {
     updateBestResult: (state, { payload: result }) => {
-      if (!state.bestResult || state.bestResult > result) {
+      if (!state.bestResult || +state.bestResult > +result) {
         state.bestResult = result;
       }
     },
