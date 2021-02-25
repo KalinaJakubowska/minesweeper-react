@@ -16,4 +16,8 @@ const store = configureStore({
 
 sagaMiddleware.run(rootSaga);
 
+store.subscribe(() => {
+  localStorage.setItem("gameLevel", store.getState().gameData.gameLevel);
+});
+
 export default store;
