@@ -11,7 +11,9 @@ import {
   selectFirstID,
   prepareGame,
   setGameFields,
+  selectGameLevel,
 } from "./gameSlice";
+import levelProperties from "./levelProperties";
 
 const generateEmptyFields = (rows, columns) => {
   let newGameFields = [];
@@ -61,8 +63,14 @@ function* startGame() {
 }
 
 function* prepareGameHandler(action) {
-  const rows = yield action.payload.rows;
-  const columns = yield action.payload.columns;
+  const currentLevel = yield select(selectGameLevel);
+
+  const rows = yield action.payload
+    ? action.payload.rows
+    : levelProperties[currentLevel].rows;
+  const columns = yield action.payload
+    ? action.payload.columns
+    : levelProperties[currentLevel].columns;
 
   const newGameFields = yield generateEmptyFields(rows, columns);
   yield put(setGameFields(newGameFields));

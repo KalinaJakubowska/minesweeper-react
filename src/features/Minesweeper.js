@@ -7,13 +7,12 @@ import { useDispatch } from "react-redux";
 import { prepareGame } from "./gameSlice";
 import ScoreBoard from "./ScoreBoard";
 import { Wrapper } from "./styled";
-import levelProperties from "./levelProperties";
 
 const Minesweeper = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(prepareGame(levelProperties.easy));
+    dispatch(prepareGame());
   }, [dispatch]);
 
   return (

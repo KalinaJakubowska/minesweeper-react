@@ -1,17 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 import idsAroundSelectedField from "./idsAroundSelectedField";
+import levelProperties from "./levelProperties";
 
 const gameSlice = createSlice({
   name: "gameData",
   initialState: {
     gameFields: [],
-    gameLineColumns: localStorage.getItem("innerLineColumns")
-      ? JSON.parse(+localStorage.getItem("innerLineColumns") + 2)
-      : 10,
-    gameLineRows: localStorage.getItem("innerLineRows")
-      ? JSON.parse(+localStorage.getItem("innerLineRows") + 2)
-      : 10,
-    bombsNumber: JSON.parse(localStorage.getItem("bombsNumberForm")) || 10,
+    gameLevel: localStorage.getItem("gameLevel")
+      ? localStorage.getItem("gameLevel")
+      : "easy",
+    gameLineColumns: localStorage.getItem("gameLevel")
+      ? levelProperties[localStorage.getItem("gameLevel")].columns
+      : levelProperties["easy"].columns,
+    gameLineRows: localStorage.getItem("gameLevel")
+      ? levelProperties[localStorage.getItem("gameLevel")].rows
+      : levelProperties["easy"].rows,
+    bombsNumber: localStorage.getItem("gameLevel")
+      ? levelProperties[localStorage.getItem("gameLevel")].bombs
+      : levelProperties["easy"].bombs,
     isGameLost: false,
     isGameWon: false,
     firstID: false,
@@ -29,13 +35,13 @@ const gameSlice = createSlice({
     revealField: ({ gameFields }, { payload: id }) => {
       gameFields[id].hidden = false;
     },
-    prepareGame: (
-      state,
-      { payload: level }
-    ) => {
-      state.gameLineColumns = level.columns;
-      state.gameLineRows = level.rows;
-      state.bombsNumber = level.bombs;
+    prepareGame: (state, { payload: currentLevelProperties }) => {
+      if (currentLevelProperties) {
+        state.gameLevel = currentLevelProperties.name;
+        state.gameLineColumns = currentLevelProperties.columns;
+        state.gameLineRows = currentLevelProperties.rows;
+        state.bombsNumber = currentLevelProperties.bombs;
+      }
       state.isGameLost = false;
       state.isGameWon = false;
       state.firstID = false;
@@ -130,6 +136,7 @@ export const selectFirstID = (state) => state.gameData.firstID;
 export const selectGameFields = (state) => state.gameData.gameFields;
 export const selectIsGameLost = (state) => state.gameData.isGameLost;
 export const selectIsGameWon = (state) => state.gameData.isGameWon;
+export const selectGameLevel = (state) => state.gameData.gameLevel;
 export const selectBombsLeft = (state) => {
   return selectIsGameWon(state)
     ? 0
