@@ -5,12 +5,12 @@ import { useSelector } from "react-redux";
 import { selectGameData, selectBombsLeft } from "../gameSlice";
 
 const Display = () => {
-    const { gameLineColumns } = useSelector(selectGameData);
+    const { columns } = useSelector(selectGameData);
 
     const bombsLeft = useSelector(selectBombsLeft);
 
     return (
-        <Wrapper columns={gameLineColumns}>
+        <Wrapper columns={columns}>
             <Item>{bombsLeft}</Item>
             <Timer />
             <Item />
