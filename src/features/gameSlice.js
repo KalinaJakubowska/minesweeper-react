@@ -9,10 +9,10 @@ const gameSlice = createSlice({
     gameLevel: localStorage.getItem("gameLevel")
       ? localStorage.getItem("gameLevel")
       : "easy",
-    gameLineColumns: localStorage.getItem("gameLevel")
+    columns: localStorage.getItem("gameLevel")
       ? levelProperties[localStorage.getItem("gameLevel")].columns
       : levelProperties["easy"].columns,
-    gameLineRows: localStorage.getItem("gameLevel")
+    rows: localStorage.getItem("gameLevel")
       ? levelProperties[localStorage.getItem("gameLevel")].rows
       : levelProperties["easy"].rows,
     bombsNumber: localStorage.getItem("gameLevel")
@@ -38,8 +38,8 @@ const gameSlice = createSlice({
     prepareGame: (state, { payload: currentLevelProperties }) => {
       if (currentLevelProperties) {
         state.gameLevel = currentLevelProperties.name;
-        state.gameLineColumns = currentLevelProperties.columns;
-        state.gameLineRows = currentLevelProperties.rows;
+        state.columns = currentLevelProperties.columns;
+        state.rows = currentLevelProperties.rows;
         state.bombsNumber = currentLevelProperties.bombs;
       }
       state.isGameLost = false;
@@ -55,7 +55,7 @@ const gameSlice = createSlice({
       state.firstID = payload;
     },
     revealAllEmptyFieldsInGroup: (
-      { gameFields, gameLineColumns },
+      { gameFields, columns },
       { payload: { id } }
     ) => {
       const revealFieldAndFieldsAround = (fieldIndex) => {
@@ -63,7 +63,7 @@ const gameSlice = createSlice({
           gameFields[fieldIndex].hidden = false;
         }
 
-        for (const id of idsAroundSelectedField(fieldIndex, gameLineColumns)) {
+        for (const id of idsAroundSelectedField(fieldIndex, columns)) {
           if (
             gameFields[id].type === "field" &&
             !gameFields[id].bombsAround &&
@@ -79,11 +79,11 @@ const gameSlice = createSlice({
       revealFieldAndFieldsAround(id);
     },
     generateFieldsContent: (state, { payload }) => {
-      const gameSize = state.gameLineColumns * state.gameLineRows;
+      const gameSize = state.columns * state.rows;
 
       const countBombsAroundAllFields = () => {
         const countBombsAroundField = (i) => {
-          return idsAroundSelectedField(i, state.gameLineColumns)
+          return idsAroundSelectedField(i, state.columns)
             .map((id) => +(state.gameFields[id].type === "bomb"))
             .reduce((acc, curr) => acc + curr);
         };
@@ -97,7 +97,7 @@ const gameSlice = createSlice({
 
       const emptyFields = idsAroundSelectedField(
         payload,
-        state.gameLineColumns
+        state.columns
       );
 
       for (let i = 1; i <= state.bombsNumber; i++) {
@@ -120,9 +120,6 @@ const gameSlice = createSlice({
 export const {
   setIsGameWon,
   setIsGameLost,
-  setBombsNumber,
-  setGameLineColumns,
-  setGameLineRows,
   setGameFields,
   revealField,
   prepareGame,
