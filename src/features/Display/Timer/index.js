@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectGameData,
+  selectGameLevel,
   selectIsGameLost,
   selectIsGameWon,
 } from "../../gameSlice.js";
@@ -9,6 +10,7 @@ import { updateBestResult } from "../../ScoreBoard/scoreBoardSlice.js";
 import { Wrapper } from "./styled.js";
 
 const Timer = () => {
+  const currentLevel = useSelector(selectGameLevel);
   const isGameWon = useSelector(selectIsGameWon);
   const isGameLost = useSelector(selectIsGameLost);
   const { firstID } = useSelector(selectGameData);
@@ -21,9 +23,10 @@ const Timer = () => {
       clearInterval(intervalRef.current);
       if (isGameWon) {
         dispatch(
-          updateBestResult(
-            ((timeData.endDate - timeData.startDate) / 1000).toFixed(2)
-          )
+          updateBestResult({
+            result: (timeData.endDate - timeData.startDate) / 1000,
+            level: currentLevel,
+          })
         );
       }
     }
