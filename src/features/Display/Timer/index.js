@@ -30,6 +30,7 @@ const Timer = () => {
         );
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isGameWon, isGameLost]);
 
   useEffect(() => {
