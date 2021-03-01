@@ -6,18 +6,16 @@ const gameSlice = createSlice({
   name: "gameData",
   initialState: {
     gameFields: [],
-    gameLevel: localStorage.getItem("gameLevel")
-      ? localStorage.getItem("gameLevel")
-      : "easy",
-    columns: localStorage.getItem("gameLevel")
-      ? levelProperties[localStorage.getItem("gameLevel")].columns
-      : levelProperties["easy"].columns,
-    rows: localStorage.getItem("gameLevel")
-      ? levelProperties[localStorage.getItem("gameLevel")].rows
-      : levelProperties["easy"].rows,
-    bombsNumber: localStorage.getItem("gameLevel")
-      ? levelProperties[localStorage.getItem("gameLevel")].bombs
-      : levelProperties["easy"].bombs,
+    gameLevel: localStorage.getItem("gameLevel") || "easy",
+    columns:
+      levelProperties[localStorage.getItem("gameLevel")]?.columns ||
+      levelProperties["easy"].columns,
+    rows:
+      levelProperties[localStorage.getItem("gameLevel")]?.rows ||
+      levelProperties["easy"].rows,
+    bombsNumber:
+      levelProperties[localStorage.getItem("gameLevel")]?.bombs ||
+      levelProperties["easy"].bombs,
     isGameLost: false,
     isGameWon: false,
     firstID: false,
@@ -95,10 +93,7 @@ const gameSlice = createSlice({
         }
       };
 
-      const emptyFields = idsAroundSelectedField(
-        payload,
-        state.columns
-      );
+      const emptyFields = idsAroundSelectedField(payload, state.columns);
 
       for (let i = 1; i <= state.bombsNumber; i++) {
         let newBomb = Math.floor(Math.random() * gameSize);
