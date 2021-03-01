@@ -18,6 +18,10 @@ sagaMiddleware.run(rootSaga);
 
 store.subscribe(() => {
   localStorage.setItem("gameLevel", store.getState().gameData.gameLevel);
+  localStorage.setItem(
+    "bestResult",
+    JSON.stringify(store.getState().scoreBoardData.bestResult)
+  );
 });
 
 export default store;

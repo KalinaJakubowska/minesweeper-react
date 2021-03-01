@@ -3,7 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const scoreBoardSlice = createSlice({
   name: "scoreBoard",
   initialState: {
-    bestResult: { easy: undefined, medium: undefined, expert: undefined },
+    bestResult: localStorage.getItem("bestResult")
+      ? JSON.parse(localStorage.getItem("bestResult"))
+      : { easy: undefined, medium: undefined, expert: undefined },
   },
   reducers: {
     updateBestResult: (state, { payload: { result, level } }) => {
