@@ -3,7 +3,7 @@ import { Wrapper } from "./styled.js"
 
 const Footer = () => (
     <Wrapper>
-        Kalina Jakubowska 2020
+        Kalina Jakubowska 2021
     </Wrapper>
 )
 export default Footer;
