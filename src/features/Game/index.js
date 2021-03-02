@@ -14,7 +14,7 @@ import {
 import idsAroundSelectedField from "../idsAroundSelectedField";
 
 const Game = () => {
-  const { gameLineColumns, gameLineRows, firstID } = useSelector(
+  const { columns, rows, firstID } = useSelector(
     selectGameData
   );
   const gameFields = useSelector(selectGameFields);
@@ -25,7 +25,7 @@ const Game = () => {
 
   const onDoubleClick = (id) => {
     const countRightClickedAroundField = (id) => {
-      return idsAroundSelectedField(id, gameLineColumns)
+      return idsAroundSelectedField(id, columns)
         .map((id) => +gameFields[id].rightClicked)
         .reduce((acc, curr) => acc + curr);
     };
@@ -67,7 +67,7 @@ const Game = () => {
   };
 
   return (
-    <GameBoard columns={gameLineColumns} rows={gameLineRows}>
+    <GameBoard columns={columns} rows={rows}>
       {gameFields.map(({ bombsAround, type, hidden, id, rightClicked }) => (
         <GameField
           onDoubleClick={() => onDoubleClick(id)}

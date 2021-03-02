@@ -1,13 +1,13 @@
-export default (index, gameLineColumns) => {
+export default (index, columns) => {
   const idsAroundFieldTemplate = [
-    gameLineColumns * -1 - 1,
-    gameLineColumns * -1,
-    gameLineColumns * -1 + 1,
+    columns * -1 - 1,
+    columns * -1,
+    columns * -1 + 1,
     -1,
     1,
-    gameLineColumns - 1,
-    gameLineColumns,
-    gameLineColumns + 1,
+    columns - 1,
+    columns,
+    columns + 1,
   ];
   return idsAroundFieldTemplate.map((id) => id + index);
 };

@@ -1,17 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import idsAroundSelectedField from "./idsAroundSelectedField";
+import levelProperties from "./levelProperties";
 
 const gameSlice = createSlice({
   name: "gameData",
   initialState: {
     gameFields: [],
-    gameLineColumns: localStorage.getItem("innerLineColumns")
-      ? JSON.parse(+localStorage.getItem("innerLineColumns") + 2)
-      : 10,
-    gameLineRows: localStorage.getItem("innerLineRows")
-      ? JSON.parse(+localStorage.getItem("innerLineRows") + 2)
-      : 10,
-    bombsNumber: JSON.parse(localStorage.getItem("bombsNumberForm")) || 10,
+    gameLevel: localStorage.getItem("gameLevel") || "easy",
+    columns:
+      levelProperties[localStorage.getItem("gameLevel")]?.columns ||
+      levelProperties["easy"].columns,
+    rows:
+      levelProperties[localStorage.getItem("gameLevel")]?.rows ||
+      levelProperties["easy"].rows,
+    bombsNumber:
+      levelProperties[localStorage.getItem("gameLevel")]?.bombs ||
+      levelProperties["easy"].bombs,
     isGameLost: false,
     isGameWon: false,
     firstID: false,
@@ -29,13 +33,13 @@ const gameSlice = createSlice({
     revealField: ({ gameFields }, { payload: id }) => {
       gameFields[id].hidden = false;
     },
-    setGameProperties: (
-      state,
-      { payload: { bombsNumber, gameLineColumns, gameLineRows } }
-    ) => {
-      state.gameLineColumns = gameLineColumns;
-      state.gameLineRows = gameLineRows;
-      state.bombsNumber = bombsNumber;
+    prepareGame: (state, { payload: currentLevelProperties }) => {
+      if (currentLevelProperties) {
+        state.gameLevel = currentLevelProperties.name;
+        state.columns = currentLevelProperties.columns;
+        state.rows = currentLevelProperties.rows;
+        state.bombsNumber = currentLevelProperties.bombs;
+      }
       state.isGameLost = false;
       state.isGameWon = false;
       state.firstID = false;
@@ -48,36 +52,8 @@ const gameSlice = createSlice({
     setFirstID: (state, { payload }) => {
       state.firstID = payload;
     },
-    generateEmptyFields: (state) => {
-      const createNewField = ({ type, hidden }) => {
-        state.gameFields.push({
-          id: state.gameFields.length,
-          type,
-          hidden,
-          bombsAround: 0,
-          rightClicked: false,
-        });
-      };
-
-      state.gameFields = [];
-
-      for (let i = 0; i < state.gameLineRows; i++) {
-        for (let y = 0; y < state.gameLineColumns; y++) {
-          if (
-            y === 0 ||
-            y === state.gameLineColumns - 1 ||
-            i === 0 ||
-            i === state.gameLineRows - 1
-          ) {
-            createNewField({ type: "border", hidden: false });
-          } else {
-            createNewField({ type: "field", hidden: true });
-          }
-        }
-      }
-    },
     revealAllEmptyFieldsInGroup: (
-      { gameFields, gameLineColumns },
+      { gameFields, columns },
       { payload: { id } }
     ) => {
       const revealFieldAndFieldsAround = (fieldIndex) => {
@@ -85,7 +61,7 @@ const gameSlice = createSlice({
           gameFields[fieldIndex].hidden = false;
         }
 
-        for (const id of idsAroundSelectedField(fieldIndex, gameLineColumns)) {
+        for (const id of idsAroundSelectedField(fieldIndex, columns)) {
           if (
             gameFields[id].type === "field" &&
             !gameFields[id].bombsAround &&
@@ -101,11 +77,11 @@ const gameSlice = createSlice({
       revealFieldAndFieldsAround(id);
     },
     generateFieldsContent: (state, { payload }) => {
-      const gameSize = state.gameLineColumns * state.gameLineRows;
+      const gameSize = state.columns * state.rows;
 
       const countBombsAroundAllFields = () => {
         const countBombsAroundField = (i) => {
-          return idsAroundSelectedField(i, state.gameLineColumns)
+          return idsAroundSelectedField(i, state.columns)
             .map((id) => +(state.gameFields[id].type === "bomb"))
             .reduce((acc, curr) => acc + curr);
         };
@@ -117,10 +93,7 @@ const gameSlice = createSlice({
         }
       };
 
-      const emptyFields = idsAroundSelectedField(
-        payload,
-        state.gameLineColumns
-      );
+      const emptyFields = idsAroundSelectedField(payload, state.columns);
 
       for (let i = 1; i <= state.bombsNumber; i++) {
         let newBomb = Math.floor(Math.random() * gameSize);
@@ -142,15 +115,11 @@ const gameSlice = createSlice({
 export const {
   setIsGameWon,
   setIsGameLost,
-  setBombsNumber,
-  setGameLineColumns,
-  setGameLineRows,
   setGameFields,
   revealField,
-  setGameProperties,
+  prepareGame,
   setFirstID,
   revealAllBombs,
-  generateEmptyFields,
   revealAllEmptyFieldsInGroup,
   generateFieldsContent,
 } = gameSlice.actions;
@@ -159,6 +128,7 @@ export const selectFirstID = (state) => state.gameData.firstID;
 export const selectGameFields = (state) => state.gameData.gameFields;
 export const selectIsGameLost = (state) => state.gameData.isGameLost;
 export const selectIsGameWon = (state) => state.gameData.isGameWon;
+export const selectGameLevel = (state) => state.gameData.gameLevel;
 export const selectBombsLeft = (state) => {
   return selectIsGameWon(state)
     ? 0

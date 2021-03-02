@@ -1,4 +1,4 @@
-import {createGlobalStyle} from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
 html {
@@ -14,7 +14,7 @@ body {
   min-height: 100vh;
   position: relative;
   font-size: 16px;
-  padding: 50px 0 70px;
-  background-color: ${({theme}) => theme.color.second}
+  padding: 20px 20px 70px;
+  background-color: ${({ theme }) => theme.color.second}
 }
-`
+`;
