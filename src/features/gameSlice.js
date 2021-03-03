@@ -57,7 +57,7 @@ const gameSlice = createSlice({
       { payload: { id } }
     ) => {
       const revealFieldAndFieldsAround = (fieldIndex) => {
-        if (gameFields[fieldIndex].rightClicked === false) {
+        if (!gameFields[fieldIndex].rightClicked) {
           gameFields[fieldIndex].hidden = false;
         }
 
