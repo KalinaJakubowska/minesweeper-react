@@ -109,6 +109,9 @@ const gameSlice = createSlice({
       }
       countBombsAroundAllFields(payload);
     },
+    toggleBombMarker: ({ gameFields }, { payload: id }) => {
+      gameFields[id].rightClicked = !gameFields[id].rightClicked;
+    },
   },
 });
 
@@ -122,6 +125,7 @@ export const {
   revealAllBombs,
   revealAllEmptyFieldsInGroup,
   generateFieldsContent,
+  toggleBombMarker,
 } = gameSlice.actions;
 export const selectGameData = (state) => state.gameData;
 export const selectFirstID = (state) => state.gameData.firstID;

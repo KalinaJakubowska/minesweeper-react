@@ -6,7 +6,7 @@ import {
   selectGameFields,
   selectIsGameLost,
   selectIsGameWon,
-  setGameFields,
+  toggleBombMarker,
   revealField,
   revealAllEmptyFieldsInGroup,
   setFirstID,
@@ -14,9 +14,7 @@ import {
 import idsAroundSelectedField from "../idsAroundSelectedField";
 
 const Game = () => {
-  const { columns, rows, firstID } = useSelector(
-    selectGameData
-  );
+  const { columns, rows, firstID } = useSelector(selectGameData);
   const gameFields = useSelector(selectGameFields);
   const isGameLost = useSelector(selectIsGameLost);
   const isGameWon = useSelector(selectIsGameWon);
@@ -37,18 +35,6 @@ const Game = () => {
     ) {
       dispatch(revealAllEmptyFieldsInGroup({ id }));
     }
-  };
-
-  const onRightClick = (event, id) => {
-    event.preventDefault();
-
-    dispatch(
-      setGameFields([
-        ...gameFields.slice(0, id),
-        { ...gameFields[id], rightClicked: !gameFields[id].rightClicked },
-        ...gameFields.slice(id + 1),
-      ])
-    );
   };
 
   const checkField = (id) => {
@@ -80,7 +66,7 @@ const Game = () => {
             hidden={!hidden}
             rightClicked={rightClicked}
             onClick={() => checkField(id)}
-            onContextMenu={(event) => onRightClick(event, id)}
+            onContextMenu={() => dispatch(toggleBombMarker(id))}
             disabled={isGameLost}
           ></GameButton>
           {bombsAround === 0 || type === "border" || bombsAround}
