@@ -23,36 +23,6 @@ const Form = () => {
           </Button>
         </ButtonWrapper>
         <Button onClick={() => dispatch(prepareGame())}>Start new game</Button>
-        {/*<Label>
-          Columns
-          <Input
-            disabled
-            required
-            type="number"
-            value={innerLineColumns}
-            name="columnsNumber"
-          />
-        </Label>
-        <Label>
-          Rows
-          <Input
-            disabled
-            required
-            type="number"
-            value={innerLineRows}
-            name="rowsNumber"
-          />
-        </Label>
-        <Label>
-          Bombs
-          <Input
-            disabled
-            required
-            type="number"
-            value={bombsNumber}
-            name="bombsNumber"
-          />
-        </Label>*/}
       </Fieldset>
     </Wrapper>
   );
